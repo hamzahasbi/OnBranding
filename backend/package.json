@@ -1,0 +1,19 @@
+{
+  "name": "onbranding-backend",
+  "version": "1.0.0",
+  "description": "This package is created to handle the project's API",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hamzahasbi/OnBranding.git"
+  },
+  "author": "Hamza Hasbi",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/hamzahasbi/OnBranding/issues"
+  },
+  "homepage": "https://github.com/hamzahasbi/OnBranding#readme"
+}
