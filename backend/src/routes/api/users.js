@@ -1,13 +1,13 @@
 const express = require('express');
 const router = express.Router();
+const { registrationRules, validate } = require('../../services/validationManager.js')
 
-const { body, validationResult } = require('express-validator');
 
 // @route POST api/register
 // @desc Route for user registration
 // @access Public
-router.post('/', (req, res) => {
-    console.log(req.body);
+router.post('/', registrationRules, validate, (req, res) => {
+    res.send('Registation DONE');
 });
 
 module.exports = router;
