@@ -10,7 +10,6 @@ module.exports = function(req, res, next) {
         return res.status(401).json({msg: 'Unauthorized to access this URL'});
     }
     const token = tokenHeader.replace("Bearer ", "");
-    console.log(token);
     try {
         const decoded = jwt.verify(token, config.get('jwtSecret'));
 

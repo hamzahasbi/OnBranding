@@ -1,11 +1,12 @@
 const express = require('express');
-
+const config = require('config');
 const app = express();
 const PORT = process.env.PORT || 5000;
-const connectDB = require('./config/database');
+const {connectDB} = require('./config/database');
+const db = config.get('mongoURI');
 
 // Connect Database.
-connectDB();
+connectDB(db);
 
 // Init Middlware.
 app.use(express.json({extended: false}));

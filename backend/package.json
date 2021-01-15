@@ -4,7 +4,7 @@
   "description": "This package is created to handle the project's API",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha --recursive --timeout 15000 --exit",
     "start": "node server.js",
     "develop": "nodemon server.js"
   },
@@ -29,8 +29,12 @@
     "mongoose": "^5.11.11"
   },
   "devDependencies": {
+    "chai": "^4.2.0",
     "concurrently": "^5.3.0",
-    "jest": "^26.6.3",
-    "nodemon": "^2.0.7"
+    "mocha": "^8.2.1",
+    "mocha.parallel": "^0.15.6",
+    "mockgoose": "^8.0.4",
+    "nodemon": "^2.0.7",
+    "supertest": "^6.1.0"
   }
 }
