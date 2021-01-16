@@ -4,7 +4,7 @@
 #
 version: 2
 jobs:
-  build-job:
+  build-back:
     docker:
       # specify the version you desire here
       - image: circleci/node:15.5
@@ -14,11 +14,11 @@ jobs:
       # documented at https://circleci.com/docs/2.0/circleci-images/
       # - image: circleci/mongo:3.4.4
 
-    working_directory: ~/repo
+    working_directory: ~/repo/backend
 
     steps:
-      - checkout
-
+      - checkout:
+          path: ~/repo/backend
       # Download and cache dependencies
       - restore_cache:
           keys:
@@ -42,7 +42,7 @@ workflows:
 
   -deploy:
     jobs:
-      - build-job:
+      - build-back:
           filters:
             branches:
               only: 
