@@ -7,11 +7,14 @@ orbs:
   node: circleci/node@4.1.0
 jobs:
   build-back:
-    executor: docker
+    docker: 
+      - image: circleci/node@4.1.0
+
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
       # documented at https://circleci.com/docs/2.0/circleci-images/
       # - image: circleci/mongo:3.4.4
+
     parameters:
       app-dir:
         default: ~/project/backend
@@ -22,9 +25,7 @@ jobs:
         description: Select the default node package manager to use.
     steps:
       - checkout
-      - install-packages:
-          app-dir: <<parameters.app-dir>>
-          pkg-manager: <<parameters.pkg-manager>>
+      - run: cd ~/project/backend
       # Download and cache dependencies
       - restore_cache:
           keys:
