@@ -6,7 +6,7 @@ version: 2
 jobs:
   build-back:
     docker: 
-      -image: circleci/node:15.5
+      - image: circleci/node:15.5
 
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
@@ -15,7 +15,6 @@ jobs:
 
     working_directory: ~/backend
     # Reuse Docker container specification given by the node Orb
-    executor: node/default  
     steps:
       - checkout
       # - run: cd ~/backend
