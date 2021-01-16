@@ -13,10 +13,19 @@ jobs:
       # documented at https://circleci.com/docs/2.0/circleci-images/
       # - image: circleci/mongo:3.4.4
 
-    # Reuse Docker container specification given by the node Orb
+    parameters:
+      app-dir:
+        default: ~/project/backend
+        description: Path to the directory containing your package.json file. Not needed if package.json lives in the root.
+        type: string
+      pkg-manager:
+        default: yarn
+        description: Select the default node package manager to use.
     steps:
       - checkout
-      - run: cd ./backend
+      - install-packages:
+          app-dir: <<parameters.app-dir>>
+          pkg-manager: <<parameters.pkg-manager>>
       # Download and cache dependencies
       - restore_cache:
           keys:
