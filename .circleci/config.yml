@@ -3,16 +3,15 @@
 # Check https://circleci.com/docs/2.0/language-javascript/ for more details
 #
 version: 2
+orbs:
+  node: circleci/node@4.1.0
 jobs:
   build-back:
-    docker: 
-      - image: circleci/node:15.5
-
+    executor: node/default
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
       # documented at https://circleci.com/docs/2.0/circleci-images/
       # - image: circleci/mongo:3.4.4
-
     parameters:
       app-dir:
         default: ~/project/backend
