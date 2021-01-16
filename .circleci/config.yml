@@ -7,7 +7,7 @@ orbs:
   node: circleci/node@4.1.0
 jobs:
   build-back:
-    executor: node/default
+    executor: docker
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
       # documented at https://circleci.com/docs/2.0/circleci-images/
