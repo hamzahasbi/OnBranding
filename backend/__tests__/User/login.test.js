@@ -9,25 +9,23 @@ var parallel = require('mocha.parallel');
 const {create, remove} = require('../../src/services/UserManager');
 
 
-describe.only('Authentication', async () => {
+describe('Authentication', async () => {
     
-    before((done) => {
+    before(async () => {
         try {
-            connectDB(db);
-            create(UserRegister.valid);
-            done();
+            await connectDB(db);
+            const payload = await create(UserRegister.valid);
         } catch(err) {
-            done(err);
+            console.error(err);
         }
     });
     
-    after((done) => {
+    after(async () => {
         try {
-            remove(UserLogin.valid.email);
+            const removed = await remove(UserLogin.valid.email);
             closeDB();
-            done();
         } catch(err) {
-            done(err);
+            console.error(err);
         }
     });
 

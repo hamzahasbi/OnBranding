@@ -10,6 +10,7 @@ async function create({name, email, password}) {
             return null;
         }
 
+
         const avatar = gravatar.url(email, {
             s: '200',
             r: 'pg',
@@ -23,7 +24,9 @@ async function create({name, email, password}) {
             password,
         });
 
-        user.password = hashPassword(password).hash;
+        const {hash, salt} = hashPassword(password);
+        user.password = hash;
+        user.salt = salt;
         await user.save();
 
         return payload = {
@@ -40,13 +43,14 @@ async function create({name, email, password}) {
 
 async function remove({email}) {
     try {
-        await User.findOneAndDelete(email, (doc) => {
-            console.log('doc');
+        const deleted = await User.findOneAndDelete(email, (err, res) => { 
+            // if (err) res.status(500).json({errors: [{msg: 'An Error Occured!'}]});
+            // else res.status(200).json('User Removed Successfully!');
         });
-        return 1;
+        return deleted;
     } catch (err) {
-        console.error(exception);
-        return -1;
+        console.error(err);
+        return null;
     }
 }
 

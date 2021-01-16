@@ -19,8 +19,7 @@ router.post('/', loginRules, validate, async(req, res) => {
     if (!user) {
         return res.status(401).json({errors: [{msg: 'Invalid Credentials'}]} );
     }
-
-    const isValid = validatePassword(password, user.password);
+    const isValid = validatePassword(user.password, password, user.salt);
 
     if (!isValid) {
         return res.status(401).json({errors: [{msg: 'Invalid Credentials'}]} );

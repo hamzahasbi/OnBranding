@@ -9,22 +9,20 @@ const {remove} = require('../../src/services/UserManager');
 
 describe('Registration', async () => {
     
-    before((done) => {
+    before(async () => {
         try {
             connectDB(db);
-            done();
         } catch (err) {
-            done(err);
+            console.error(err);
         }
     });
     
-    after( (done) => {
+    after(async () => {
         try {
-            remove(UserRegister.valid.email);
+            const removed = await remove(UserRegister.valid.email);
             closeDB();
-            done();
-        } catch (err) {
-            done(err);
+        } catch(err) {
+            console.error(err);
         }
     });
 
