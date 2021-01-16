@@ -1,7 +1,7 @@
 const request = require('supertest');
 const {expect} = require('chai');
 const app = require('../server/index');
-const {UserRegister} = require('../MockSet/UserMock');
+const {UserRegister} = require('../__mocks__/UserMock');
 const config = require('config');
 const db = config.get('mongoTestURI');
 const {connectDB, closeDB} = require('../../config/database');
