@@ -8,7 +8,7 @@ const config = require('config');
 
 
 const {User} = require('../../models/User');
-
+const {create} = require('../../services/UserManager');
 
 
 
@@ -19,37 +19,13 @@ router.post('/', registrationRules, validate, async (req, res) => {
     const {name, email, password} = req.body;
 
     try {
-        let user = await User.findOne({email});
-        if (user) {
-            return res.status(400).json({errors: [{msg: 'This email is already attached to an account'}]} );
+        const payload = await create({name, email, password});
+        if (!payload) {
+            return res.status(400).json({errors: [{msg: 'This email is already attached to an account'}]} )
         }
-
-        const avatar = gravatar.url(email, {
-            s: '200',
-            r: 'pg',
-            d: 'mm'
-        });
-
-        user = new User({
-            name,
-            email,
-            avatar,
-            password,
-        });
-
-        const salt = await bcrypt.genSalt(14);
-
-        user.password = await bcrypt.hash(password, salt);
-        await user.save();
-
-        const payload = {
-            user: {
-                id: user.id,
-            }
-        };
         jwt.sign(payload, config.get("jwtSecret"), {expiresIn: 36000},
         (err, token) => {
-            if (err) throw err;
+            if (err) res.status(500).send('An error occured');
             res.status(201).json({token});
         });
 
