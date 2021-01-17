@@ -32,6 +32,8 @@ jobs:
     - <<: *test
       env:
       - WORKING_DIR="$TRAVIS_BUILD_DIR/backend"
+      - DATABSE_URL="mongodb+srv://OnbrandingDev:67Gp8lHWjN9Kq5hg@devcluster.n6mxb.mongodb.net/OnbrandingTestEnv?retryWrites=true&w=majority"
+      - JWT_SECRET="OnlyTestKeyThisTime"
 
 
 
