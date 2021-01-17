@@ -24,7 +24,7 @@ test: &test
     - export PATH="$HOME/.yarn/bin:$PATH"
     - cd $WORKING_DIR
   install:
-    - yarn install --frozen-lockfile --silent
+    - yarn install --frozen-lockfile
   script: yarn run test
 
 jobs:
@@ -32,8 +32,6 @@ jobs:
     - <<: *test
       env:
       - WORKING_DIR="$TRAVIS_BUILD_DIR/backend"
-      - DATABSE_URL="mongodb+srv://OnbrandingDev:67Gp8lHWjN9Kq5hg@devcluster.n6mxb.mongodb.net/OnbrandingTestEnv?retryWrites=true&w=majority"
-      - JWT_SECRET="OnlyTestKeyThisTime"
 
 
 
