@@ -32,7 +32,7 @@ router.post('/', loginRules, validate, async(req, res) => {
     };
     const secret = process.env.JWT_SECRET || config.get('jwtSecret');
 
-    jwt.sign(payload, config.get("jwtSecret"), {expiresIn: 36000},
+    jwt.sign(payload, secret, {expiresIn: 36000},
     (err, token) => {
         if (err) throw err;
         res.json({token});
