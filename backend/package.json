@@ -4,7 +4,7 @@
   "description": "This package is created to handle the project's API",
   "main": "server.js",
   "scripts": {
-    "test": "mocha \"__tests__/**/*.test.js\" --recursive --timeout 15000 --exit",
+    "test": "mocha \"__tests__/**/*.test.js\" --recursive --timeout 20000 --exit",
     "start": "node server.js",
     "develop": "nodemon server.js"
   },
