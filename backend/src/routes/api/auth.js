@@ -30,6 +30,8 @@ router.post('/', loginRules, validate, async(req, res) => {
             id: user.id,
         }
     };
+    const secret = process.env.JWT_SECRET || config.get('jwtSecret');
+
     jwt.sign(payload, config.get("jwtSecret"), {expiresIn: 36000},
     (err, token) => {
         if (err) throw err;

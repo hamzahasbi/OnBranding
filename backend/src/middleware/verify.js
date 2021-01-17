@@ -10,8 +10,10 @@ module.exports = function (req, res, next) {
         return res.status(401).json({msg: 'Unauthorized to access this URL'});
     }
     const token = tokenHeader.replace("Bearer ", "");
+    
+    const secret = process.env.JWT_SECRET || config.get('jwtSecret');
     try {
-        const decoded = jwt.verify(token, config.get('jwtSecret'));
+        const decoded = jwt.verify(token, secret);
 
         req.user = decoded.user;
         next();

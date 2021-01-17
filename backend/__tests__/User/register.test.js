@@ -3,7 +3,7 @@ const {expect} = require('chai');
 const app = require('../server/index');
 const {UserRegister} = require('../__mocks__/UserMock');
 const config = require('config');
-const db = config.get('mongoTestURI');
+const db = process.env.DATABASE_URL || config.get('mongoTestURI');
 const {connectDB, closeDB} = require('../../config/database');
 const {remove} = require('../../src/services/UserManager');
 
