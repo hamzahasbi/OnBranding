@@ -6,9 +6,9 @@ const config = require('config');
 const db = process.env.DATABASE_URL || config.get('mongoTestURI');
 const {connectDB, closeDB} = require('../../config/database');
 const {create, remove} = require('../../src/services/UserManager');
+const parallel = require('mocha.parallel')
 
-
-describe('Authentication', async () => {
+parallel('Authentication', async () => {
     
     before(async () => {
         try {
