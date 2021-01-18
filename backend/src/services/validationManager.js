@@ -8,6 +8,19 @@ const registrationRules = [
 ];
 
 
+const loginRules = [
+  check('email', 'Please Include a Valid Email').not().isEmpty().isEmail(),
+  check('password', 'Password is required').notEmpty(),
+];
+
+const profileRules = [
+  check('status', 'Status is required').notEmpty(),
+  check('location', 'Location is required').notEmpty(),
+  check('bio', 'Bio is required').notEmpty(),
+  check('skills', 'Skills are required').notEmpty(),
+  check('interest', 'Interest is required').notEmpty(),
+];
+
 
 const validate = (req, res, next) => {
     const errors = validationResult(req)
@@ -23,12 +36,9 @@ const validate = (req, res, next) => {
 };
 
 
-const loginRules = [
-  check('email', 'Please Include a Valid Email').not().isEmpty().isEmail(),
-  check('password', 'Password is required').notEmpty(),
-];
 module.exports = {
   loginRules,
   registrationRules,
+  profileRules,
   validate,
 }

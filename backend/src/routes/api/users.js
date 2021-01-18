@@ -29,9 +29,9 @@ router.post('/', registrationRules, validate, async (req, res) => {
             res.status(201).json({token});
         });
 
-    } catch (exception) {
-        console.error(exception);
-        res.status(500).send('An error occured');
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({errors: [{msg: 'The server encountered an Error!'}]});
     }
 });
 

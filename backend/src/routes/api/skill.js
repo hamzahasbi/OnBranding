@@ -1,13 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const verify = require('../../middleware/verify');
-const Profile = require('../../models/Profile');
+const Profile = require('../../models/Skill');
 const {validate, profileRules} = require('../../services/validationManager');
 
 // @route GET api/profile
 // @desc Route for the author profile
 // @access Private
-router.get('/profile', verify, async (req, res) => {
+router.get('/skill', verify, async (req, res) => {
 
     try {
         const user = req.user.id;
