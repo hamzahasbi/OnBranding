@@ -25,7 +25,7 @@ router.post('/', registrationRules, validate, async (req, res) => {
 
         jwt.sign(payload, secret, {expiresIn: 36000},
         (err, token) => {
-            if (err) res.status(500).send('An error occured');
+            if (err) res.status(500).json({errors: [{msg: 'The server encountered an Error!'}]});
             res.status(201).json({token});
         });
 

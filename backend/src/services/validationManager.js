@@ -21,6 +21,10 @@ const profileRules = [
   check('interest', 'Interest is required').notEmpty(),
 ];
 
+const skillRules = [
+  check('name', 'Name is required').notEmpty(),
+];
+
 
 const validate = (req, res, next) => {
     const errors = validationResult(req)
@@ -40,5 +44,6 @@ module.exports = {
   loginRules,
   registrationRules,
   profileRules,
+  skillRules,
   validate,
 }
