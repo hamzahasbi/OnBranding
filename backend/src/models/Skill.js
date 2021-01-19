@@ -5,9 +5,13 @@ const SkillSchema = mongoose.Schema({
 
     'name': {
         type: String,
+        unique: true,
         required: true,
     },
     'icon': {
+        type: String,
+    },
+    'description': {
         type: String,
     },
     date: {
