@@ -13,6 +13,7 @@ app.get('/', (req, res) => res.send('server runing'));
 app.use('/api/profile', require(('../../src/routes/api/profile')));
 app.use('/api/login', require(('../../src/routes/api/auth')));
 app.use('/api/register', require(('../../src/routes/api/users')));
+app.use('/api/skill', require(('../../src/routes/api/skill')));
 
 // Errors Routes.
 app.use((err, req, res, next) => res.status(500).json({errors: err}));

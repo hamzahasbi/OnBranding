@@ -7,7 +7,7 @@ const db = process.env.DATABASE_URL || config.get('mongoTestURI');
 const {connectDB, closeDB} = require('../../config/database');
 const {remove} = require('../../src/services/UserManager');
 
-describe('Registration', async () => {
+describe('Registration Test Suite', async () => {
     
     before(async () => {
         try {
