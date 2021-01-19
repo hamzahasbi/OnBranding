@@ -9,7 +9,8 @@ module.exports = function (req, res, next) {
     if (!tokenHeader) {
         return res.status(401).json({msg: 'Unauthorized to access this URL'});
     }
-    const token = tokenHeader.replace("Bearer ", "");
+    const regEx = new RegExp('Bearer ', "ig");
+    const token = tokenHeader.replace(regEx, "");
     
     const secret = process.env.JWT_SECRET || config.get('jwtSecret');
     try {
