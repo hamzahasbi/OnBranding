@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const verify = require('../../middleware/verify');
 const Skill = require('../../models/Skill');
-const {create, update} = require('../../services/skillManager');
+const SkillManager = require('../../services/SkillManager');
 const {validate, skillRules} = require('../../services/validationManager');
 
 
@@ -22,7 +22,6 @@ router.get('/:name', async (req, res) => {
         res.status(200).json({ressources: target});
         
     } catch (err) {
-        console.error(err);
         return res.status(500).json({errors: [{msg: 'The server encoutered an Error!'}]});
     }
 });
@@ -39,7 +38,6 @@ router.get('/skill', async (req, res) => {
         res.send('REquest finished');
         
     } catch (err) {
-        console.error(err);
         return res.status(500).json({errors: [{msg: 'The server encoutered an Error!'}]});
     }
 });
@@ -53,7 +51,7 @@ router.post('/add', skillRules, validate, verify, async (req, res) => {
     try {
 
         const {name, description, icon} = req.body;
-        const created = await(create({name, description, icon}));
+        const created = await(SkillManager.create({name, description, icon}));
         if(!created) {
             return res.status(500).json({errors: [{msg: 'The server encoutered an Error!'}]});
         }
@@ -61,7 +59,6 @@ router.post('/add', skillRules, validate, verify, async (req, res) => {
 
             
     } catch (err) {
-        console.error(err);
         return res.status(500).json({errors: [{msg: 'The server encountered an Error!'}]});
     }
 });
@@ -74,7 +71,7 @@ router.patch('/update', skillRules, validate, verify, async (req, res) => {
     try {
 
         const {id, name, description, icon} = req.body;
-        const updated = await update({id, name, description, icon});
+        const updated = await SkillManager.update({id, name, description, icon});
         if(!updated) {
             return res.status(422).json({errors: [{msg: 'Unprocessable Entity'}]});
         }
@@ -82,7 +79,6 @@ router.patch('/update', skillRules, validate, verify, async (req, res) => {
 
             
     } catch (err) {
-        console.error(err);
         return res.status(500).json({errors: [{msg: 'The server encountered an Error!'}]});
     }
 });

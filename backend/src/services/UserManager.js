@@ -63,7 +63,7 @@ async function update({id, name, password}) {
         return null;
     }
 }
-module.exports = {
+module.exports = UserManager = {
     create,
     remove,
     update

@@ -4,7 +4,7 @@ const { registrationRules, validate } = require('../../services/validationManage
 const jwt = require('jsonwebtoken');
 const config = require('config');
 
-const {create} = require('../../services/UserManager');
+const UserManager = require('../../services/UserManager');
 
 
 
@@ -15,7 +15,7 @@ router.post('/', registrationRules, validate, async (req, res) => {
     const {name, email, password} = req.body;
 
     try {
-        const payload = await create({name, email, password});
+        const payload = await UserManager.create({name, email, password});
 
         if (!payload) {
             return res.status(400).json({errors: [{msg: 'This email is already attached to an account'}]} )
