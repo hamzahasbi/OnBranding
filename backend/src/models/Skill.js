@@ -14,10 +14,6 @@ const SkillSchema = mongoose.Schema({
     'description': {
         type: String,
     },
-    date: {
-        type: Date,
-        default: Date.now
-    },
 }, {timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }});
 
 module.exports = {

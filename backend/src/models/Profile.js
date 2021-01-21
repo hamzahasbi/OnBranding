@@ -59,48 +59,16 @@ const ProfileSchema = new mongoose.Schema({
     },
     projects: [
         {
-            name: {
-                type: String,
-                required: true
-            },
-            intro: {
-                type: String,
-                required: true
-            },
-            tags: [
-                {
-                    type: mongoose.Schema.Types.ObjectId,
-                    ref: 'skill',
-                }
-            ],
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'project'
         }
     ],
     posts: [
         {
-            name: {
-                type: String,
-                required: true
-            },
-            intro: {
-                type: String,
-                required: true
-            },
-            link: {
-                type: String,
-                required: true
-            },
-            tags: [
-                {
-                    type: mongoose.Schema.Types.ObjectId,
-                    ref: 'skill',
-                }
-            ],
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'post'
         }
     ],
-    date: {
-        type: Date,
-        default: Date.now
-    },
     profiltags: {
         type: [String],
     },

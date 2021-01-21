@@ -82,4 +82,27 @@ router.patch('/update', skillRules, validate, verify, async (req, res) => {
         return res.status(500).json({errors: [{msg: 'The server encountered an Error!'}]});
     }
 });
+
+
+// @route DELETE api/skill
+// @desc Route to create the author profile
+// @access Private
+router.delete('/update', verify, async (req, res) => {
+
+    try {
+
+        const {id} = req.body;
+        const updated = await SkillManager.update({id, name, description, icon});
+        if(!updated) {
+            return res.status(422).json({errors: [{msg: 'Unprocessable Entity'}]});
+        }
+        res.status(201).json({ressource: updated});
+
+            
+    } catch (err) {
+        return res.status(500).json({errors: [{msg: 'The server encountered an Error!'}]});
+    }
+});
+
+
 module.exports = router;
