@@ -20,6 +20,16 @@ async function create({name, description, icon}) {
 
 }
 
+async function getAll() {
+    try {
+
+        let skills = await Skill.find({}, ).exec();
+    
+        return skills;
+    } catch(err) {
+        return null;
+    }
+}
 
 async function remove(properety) {
     try {
@@ -55,5 +65,6 @@ module.exports = SkillManager = {
     create,
     remove,
     update,
-    removebyId
+    removebyId,
+    getAll
 }

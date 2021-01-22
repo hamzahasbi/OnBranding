@@ -87,16 +87,16 @@ router.patch('/update', skillRules, validate, verify, async (req, res) => {
 // @route DELETE api/skill
 // @desc Route to create the author profile
 // @access Private
-router.delete('/update', verify, async (req, res) => {
+router.delete('/remove', verify, async (req, res) => {
 
     try {
 
         const {id} = req.body;
-        const updated = await SkillManager.update({id, name, description, icon});
-        if(!updated) {
+        const removed = await SkillManager.removebyId({id});
+        if(!removed) {
             return res.status(422).json({errors: [{msg: 'Unprocessable Entity'}]});
         }
-        res.status(201).json({ressource: updated});
+        res.status(200).json({ressource: removed});
 
             
     } catch (err) {
