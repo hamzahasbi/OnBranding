@@ -69,6 +69,25 @@ describe('Skill Set Test Suit', async () => {
         expect(res.body.errors).to.be.not.empty;
     });
 
+    it('Get List of skills', async () => {
+        
+        const res = await request(app).get('/api/skill');
+        expect(res.status).to.eq(200);
+        expect(res.body).to.haveOwnProperty('ressource');
+        expect(res.body.ressource).to.be.not.empty;
+
+
+    });
+    it('Get a skill by property', async () => {
+        
+        const res = await request(app).get(`/api/skill/${id}`);
+        expect(res.status).to.eq(200);
+        expect(res.body).to.haveOwnProperty('ressource');
+        expect(res.body.ressource).to.be.not.empty;
+
+
+    }); 
+
     it('Update a skill with no ID', async () => {
 
         const res = await request(app).patch('/api/skill/update').auth(token, {type: 'bearer'}).send(updatedSkillFull);

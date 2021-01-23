@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
+const mongoose = require('mongoose');
 const verify = require('../../middleware/verify');
-const Skill = require('../../models/Skill');
+const {Skill} = require('../../models/Skill');
 const SkillManager = require('../../services/SkillManager');
 const {validate, skillRules} = require('../../services/validationManager');
 
@@ -9,19 +10,19 @@ const {validate, skillRules} = require('../../services/validationManager');
 // @route GET api/skill
 // @desc Route for all the skill tags
 // @access Public
-router.get('/:name', async (req, res) => {
+router.get('/:id', async (req, res) => {
 
     try {
         
-        const name = req.params.name;
-        const target = await Skill.findOne({name: name});
-
+        const id = mongoose.Types.ObjectId(req.params.id);
+        const target = await Skill.findById(id).exec();
         if (!target) {
             return res.status(400).json({errors: [{msg: 'The skill you requested does not exist!'}]});
         }
-        res.status(200).json({ressources: target});
+        res.status(200).json({ressource: target});
         
     } catch (err) {
+        console.error(err);
         return res.status(500).json({errors: [{msg: 'The server encoutered an Error!'}]});
     }
 });
@@ -31,11 +32,19 @@ router.get('/:name', async (req, res) => {
 // @route GET api/skill
 // @desc Route for a specific skill tag
 // @access Public
-router.get('/skill', async (req, res) => {
+router.get('/', async (req, res) => {
 
     try {
-        console.log(req);
-        res.send('REquest finished');
+        const all = await SkillManager.getAll();
+        
+        if (!all) {
+            return res.status(500).json({errors: [{msg: 'The server encoutered an Error!'}]});
+        }
+
+        
+        res.status(200).json({
+            ressource: all,
+        })
         
     } catch (err) {
         return res.status(500).json({errors: [{msg: 'The server encoutered an Error!'}]});
@@ -59,6 +68,7 @@ router.post('/add', skillRules, validate, verify, async (req, res) => {
 
             
     } catch (err) {
+        console.log(err);
         return res.status(500).json({errors: [{msg: 'The server encountered an Error!'}]});
     }
 });

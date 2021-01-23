@@ -12,7 +12,7 @@ async function create({name, description, icon}) {
         if (icon) skill.icon = icon;
     
         await skill.save();
-
+        
         return skill;
     } catch(err) {
         return null;
@@ -23,7 +23,7 @@ async function create({name, description, icon}) {
 async function getAll() {
     try {
 
-        let skills = await Skill.find({}, ).exec();
+        let skills = await Skill.find({}, null, {sort: {name: 'asc'}}).exec();
     
         return skills;
     } catch(err) {
