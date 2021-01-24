@@ -21,11 +21,7 @@ const UserSchema = new mongoose.Schema({
     avatar: {
         type: String,
     },
-    date: {
-        type: Date,
-        default: Date.now,
-    }
-});
+}, {timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }});
 
 module.exports = {
     User : mongoose.model('user', UserSchema),

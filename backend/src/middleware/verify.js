@@ -7,9 +7,11 @@ module.exports = function (req, res, next) {
 
 
     if (!tokenHeader) {
-        return res.status(401).json({msg: 'Unauthorized to access this URL'});
+        return res.status(401).json({errors: [{msg: 'Your token has expired'}]});
+        
     }
-    const token = tokenHeader.replace("Bearer ", "");
+    const regEx = new RegExp('Bearer ', "ig");
+    const token = tokenHeader.replace(regEx, "");
     
     const secret = process.env.JWT_SECRET || config.get('jwtSecret');
     try {
@@ -18,6 +20,6 @@ module.exports = function (req, res, next) {
         req.user = decoded.user;
         next();
     } catch(err) {
-        res.status(401).json({msg: 'Your token has expired'});
+        res.status(401).json({errors: [{msg: 'Your token has expired'}]});
     }
 };

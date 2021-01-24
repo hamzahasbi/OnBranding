@@ -5,9 +5,9 @@ const {UserRegister} = require('../__mocks__/UserMock');
 const config = require('config');
 const db = process.env.DATABASE_URL || config.get('mongoTestURI');
 const {connectDB, closeDB} = require('../../config/database');
-const {remove} = require('../../src/services/UserManager');
+const remove = require('../../src/services/UserManager').remove;
 
-describe('Registration', async () => {
+describe('Registration Test Suite', async () => {
     
     before(async () => {
         try {

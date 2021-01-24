@@ -43,10 +43,7 @@ async function create({name, email, password}) {
 
 async function remove({email}) {
     try {
-        const deleted = await User.findOneAndDelete(email, (err, res) => { 
-            // if (err) res.status(500).json({errors: [{msg: 'An Error Occured!'}]});
-            // else res.status(200).json('User Removed Successfully!');
-        });
+        const deleted = await User.findOneAndDelete(email).exec();
         return deleted;
     } catch (err) {
         console.error(err);
@@ -54,8 +51,20 @@ async function remove({email}) {
     }
 }
 
+async function update({id, name, password}) {
+    
+    try {
 
-module.exports = {
+        const {hash, salt} = hashPassword(password);
+        const updated = await User.findByIdAndUpdate(id, {name, hash, salt}, {omitUndefined: true, new: true}).exec();
+        return updated;
+    } catch(err) {
+        console.error(err);
+        return null;
+    }
+}
+module.exports = UserManager = {
     create,
-    remove
+    remove,
+    update
 }
