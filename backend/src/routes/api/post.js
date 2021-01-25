@@ -7,27 +7,6 @@ const PostManager = require('../../services/PostManager');
 const {validate, postRules} = require('../../services/validationManager');
 
 
-// @route GET api/skill/:id
-// @desc Route for all the skill tags
-// @access Public
-router.get('/:id', async (req, res) => {
-
-    try {
-        
-        const id = mongoose.Types.ObjectId(req.params.id);
-        const target = await Skill.findById(id).exec();
-        if (!target) {
-            return res.status(400).json({errors: [{msg: 'The skill you requested does not exist!'}]});
-        }
-        res.status(200).json({ressource: target});
-        
-    } catch (err) {
-        console.error(err);
-        return res.status(500).json({errors: [{msg: 'The server encoutered an Error!'}]});
-    }
-});
-
-
 
 // @route GET api/post
 // @desc Route for a specific skill tag
@@ -38,7 +17,7 @@ router.get('/', verify, async (req, res) => {
 
 
         const {limit, offset} = req.query;
-        const user = mongoose.Types.ObjectId(req.params.id);
+        const user = mongoose.Types.ObjectId(req.user.id);
         const all = await PostManager.getAll(user, limit, offset);
         
         if (!all) {
@@ -65,7 +44,7 @@ router.get('/list', async (req, res) => {
 
 
         const {email, limit, offset} = req.query;
-        const all = await PostManager.getAll(user, limit, offset);
+        const all = await PostManager.getAll({email}, limit, offset);
         
         if (!all) {
             return res.status(500).json({errors: [{msg: 'The server encoutered an Error!'}]});

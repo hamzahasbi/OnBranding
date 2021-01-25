@@ -1,5 +1,6 @@
 
 const {Post} = require('../models/Post');
+const {User} = require('../models/User');
 const mongoose = require('mongoose');
 
 
@@ -37,46 +38,65 @@ async function create({name, intro, link, tags, user}) {
 
 }
 
-async function getAllPrivate(user, limit = 4, offset = 0) {
+async function getAll(user, limit = 4, offset = 0) {
     try {
-        const options = {
-            sort: {name: 'asc'},
-            limit,
-            skip: offset
-        }
+        let posts = null;
 
-        const posts = await Post.aggregate([
-            {
-                $match: {
-                    _id: ObjectId(userId)
+        if (user.hasOwnProperty('email')) {
+            const {email} = user;
+            posts = await Post.aggregate([
+                {
+                    $lookup: {
+                        from: 'users',
+                        as: 'user',
+                        // localField: 'user', 
+                        "let": {
+                            user : "$user"
+                        },
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            {
+                                                $eq: ['$email', email],
+                                            },
+                                            {
+                                                $eq: ['$_id', '$$user'],
+                                            }
+                                        ]
+                                    }
+                                },
+                            }
+                        ],
+                    }
+    
+                },
+                {
+                    $match: {'user.email': email}
                 }
-            }
-        ])
-    
-        return posts;
-    } catch(err) {
-        return null;
-    }
-}
-
-async function getAllPublic(email, limit = 4, offset = 0) {
-    try {
-        const options = {
-            sort: {name: 'asc'},
-            limit,
-            skip: offset
+            ]).sort({name: 'asc'}).limit(limit).skip(offset).exec();
         }
-
-        const posts = await Post.find({user}, null, options).lean()
-            .populate('user', 'name email avatar')
-            .populate('tags', 'name icon')
-            .exec();
-    
+        
+        else {
+            const options = {
+                sort: {name: 'asc'},
+                limit,
+                skip: offset
+            }
+            posts = await Post.find({user}, null, options)
+                .populate('user', 'name email avatar')
+                .populate('tags', 'name icon')
+                .exec();
+        
+        }
         return posts;
     } catch(err) {
+        console.error(err);
         return null;
     }
 }
+
 
 async function remove(properety) {
     try {
@@ -113,5 +133,5 @@ module.exports = SkillManager = {
     remove,
     update,
     removebyId,
-    getAll
+    getAll,
 }
