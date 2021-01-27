@@ -16,9 +16,12 @@ router.get('/', verify, async (req, res) => {
     try {
 
 
-        const {limit, offset} = req.query;
+        const {limit, tags, offset, sort, post} = req.query;
         const user = mongoose.Types.ObjectId(req.user.id);
-        const all = await PostManager.getAll(user, limit, offset);
+        
+        const nTags = tags?.split(',')?.map(el => mongoose.Types.ObjectId(el));
+    
+        const all = await PostManager.get(user, {tags: nTags, id: post}, sort, limit, offset);
         
         if (!all) {
             return res.status(500).json({errors: [{msg: 'The server encoutered an Error!'}]});
@@ -30,6 +33,7 @@ router.get('/', verify, async (req, res) => {
         })
         
     } catch (err) {
+        console.log(err);
         return res.status(500).json({errors: [{msg: 'The server encoutered an Error!'}]});
     }
 });
@@ -43,8 +47,10 @@ router.get('/list', async (req, res) => {
     try {
 
 
-        const {email, limit, offset} = req.query;
-        const all = await PostManager.getAll({email}, limit, offset);
+        const {email, tags, limit, offset, sort, post} = req.query;
+        const nTags = tags?.split(',')?.map(el => mongoose.Types.ObjectId(el));
+
+        const all = await PostManager.get({email}, {tags: nTags, id: post}, sort, limit, offset);
         
         if (!all) {
             return res.status(500).json({errors: [{msg: 'The server encoutered an Error!'}]});
@@ -56,6 +62,7 @@ router.get('/list', async (req, res) => {
         })
         
     } catch (err) {
+        console.log(err)
         return res.status(500).json({errors: [{msg: 'The server encoutered an Error!'}]});
     }
 });
@@ -85,12 +92,12 @@ router.post('/add', postRules, validate, verify, async (req, res) => {
 // @route PATCH api/skill
 // @desc Route to create the author profile
 // @access Private
-router.patch('/update', postRules, validate, verify, async (req, res) => {
+router.patch('/update', validate, verify, async (req, res) => {
 
     try {
 
-        const {id, name, description, icon} = req.body;
-        const updated = await SkillManager.update({id, name, description, icon});
+        const {id, name, intro, tags, link} = req.body;
+        const updated = await SkillManager.update({id, name, intro, tags, link});
         if(!updated) {
             return res.status(422).json({errors: [{msg: 'Unprocessable Entity'}]});
         }
@@ -111,7 +118,7 @@ router.delete('/remove', verify, async (req, res) => {
     try {
 
         const {id} = req.body;
-        const removed = await SkillManager.removebyId({id});
+        const removed = await PostManager.remove({id});
         if(!removed) {
             return res.status(422).json({errors: [{msg: 'Unprocessable Entity'}]});
         }

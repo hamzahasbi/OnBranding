@@ -38,13 +38,53 @@ async function create({name, intro, link, tags, user}) {
 
 }
 
-async function getAll(user, limit = 4, offset = 0) {
+
+async function remove(properety) {
+    try {
+        const deleted = await Post.findOneAndDelete(properety).exec();
+        return deleted;
+    } catch (err) {
+        return null;
+    }
+}
+
+
+async function update({id, name, intro, link, tags}) {
+    
+    try {
+        let normalizedTags = undefined;
+        if (tags) {
+            if (Array.isArray(tags)) {
+                normalizedTags = tags.map(tag => mongoose.Types.ObjectId(tag.trim()));
+            } else {
+                normalizedTags = tags.split(',').map(tag =>  mongoose.Types.ObjectId(tag.trim()));
+            }
+        }
+        const updated = await Post.findByIdAndUpdate(id, {name, intro, link, tags: normalizedTags}, {omitUndefined: true, new: true}).exec();
+        return updated;
+    } catch(err) {
+        console.error(err)
+        return null;
+    }
+}
+
+async function get(user, properties, sort = {name: 'asc'}, limit = 4, offset = 0) {
     try {
         let posts = null;
 
+        // Filters can't be used both.
+        const tags = properties?.tags;
+        const postId = properties?.id;
+
+        const filter = tags ? {'tags': { '$in': tags}} : (postId ? {'_id' : mongoose.Types.ObjectId(postId)} : {});
+
+        // public API.
         if (user.hasOwnProperty('email')) {
             const {email} = user;
             posts = await Post.aggregate([
+                {
+                    $match: filter
+                },
                 {
                     $lookup: {
                         from: 'users',
@@ -75,16 +115,16 @@ async function getAll(user, limit = 4, offset = 0) {
                 {
                     $match: {'user.email': email}
                 }
-            ]).sort({name: 'asc'}).limit(limit).skip(offset).exec();
+            ]).sort(sort).limit(limit).skip(offset).exec();
         }
-        
+        // Private API
         else {
             const options = {
-                sort: {name: 'asc'},
+                sort,
                 limit,
                 skip: offset
             }
-            posts = await Post.find({user}, null, options)
+            posts = await Post.find({user, ...filter}, null, options)
                 .populate('user', 'name email avatar')
                 .populate('tags', 'name icon')
                 .exec();
@@ -96,42 +136,9 @@ async function getAll(user, limit = 4, offset = 0) {
         return null;
     }
 }
-
-
-async function remove(properety) {
-    try {
-        const deleted = await Post.findOneAndDelete(properety).exec();
-        return deleted;
-    } catch (err) {
-        return null;
-    }
-}
-
-async function removebyId({id}) {
-    try {
-        const deleted = await Post.findOneAndDelete(id).exec();
-        return deleted;
-    } catch (err) {
-        return null;
-    }
-}
-
-
-async function update({id, name, intro, link, tags}) {
-    
-    try {
-
-        const updated = await Post.findByIdAndUpdate(id, {name, intro, link, tags}, {omitUndefined: true, new: true}).exec();
-        return updated;
-    } catch(err) {
-        return null;
-    }
-}
-
 module.exports = SkillManager = {
     create,
     remove,
     update,
-    removebyId,
-    getAll,
+    get,
 }
