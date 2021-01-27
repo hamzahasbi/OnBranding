@@ -9,7 +9,6 @@ const ProjectSchema = mongoose.Schema({
     name: {
         type: String,
         required: true,
-        unique: true
     },
     intro: {
         type: String,

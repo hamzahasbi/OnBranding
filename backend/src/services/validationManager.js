@@ -28,8 +28,8 @@ const skillRules = [
 
 const postRules = [
   check('name', 'Name is required').notEmpty(),
-  check('intro', 'Introduction is required').notEmpty().isLength({ min: 120, max:400 }),
-  check('link', 'Link is required').notEmpty().isURL(),
+  check('intro', 'Introduction is required and must be >= 120 and <= 400 chars').notEmpty().isLength({ min: 120, max:400 }),
+  check('link', 'A valid Link is required').notEmpty().isURL(),
 ];
 
 
