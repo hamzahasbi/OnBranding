@@ -40,15 +40,6 @@ async function remove(properety) {
     }
 }
 
-async function removebyId({id}) {
-    try {
-        const deleted = await Skill.findOneAndDelete(id).exec();
-        return deleted;
-    } catch (err) {
-        return null;
-    }
-}
-
 
 async function update({id, name, description, icon}) {
     
@@ -65,6 +56,5 @@ module.exports = SkillManager = {
     create,
     remove,
     update,
-    removebyId,
     getAll
 }
