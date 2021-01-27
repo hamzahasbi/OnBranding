@@ -74,9 +74,9 @@ router.post('/add', postRules, validate, verify, async (req, res) => {
 
     try {
 
-        const {name, intro, link, tags} = req.body;
+        const {name, intro, link, tags, thumbnail} = req.body;
         const user = req.user;
-        const created = await(PostManager.create({name, intro, link, tags, user}));
+        const created = await(PostManager.create({name, intro, link, tags, user, thumbnail}));
         if(!created) {
             return res.status(500).json({errors: [{msg: 'The server encoutered an Error!'}]});
         }
@@ -96,8 +96,8 @@ router.patch('/update', validate, verify, async (req, res) => {
 
     try {
 
-        const {id, name, intro, tags, link} = req.body;
-        const updated = await SkillManager.update({id, name, intro, tags, link});
+        const {id, name, intro, tags, link, thumbnail} = req.body;
+        const updated = await SkillManager.update({id, name, intro, tags, link, thumbnail});
         if(!updated) {
             return res.status(422).json({errors: [{msg: 'Unprocessable Entity'}]});
         }

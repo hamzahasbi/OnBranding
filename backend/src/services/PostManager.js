@@ -1,18 +1,18 @@
 
 const {Post} = require('../models/Post');
-const {User} = require('../models/User');
 const mongoose = require('mongoose');
 
 
 
-async function create({name, intro, link, tags, user}) {
+async function create({name, intro, link, tags, user, thumbnail}) {
     
     try {
 
         let post = new Post({
             name,
             intro,
-            link
+            link,
+            thumbnail
         });
 
         post.user = mongoose.Types.ObjectId(user.id);
@@ -49,7 +49,7 @@ async function remove(properety) {
 }
 
 
-async function update({id, name, intro, link, tags}) {
+async function update({id, name, intro, link, tags, thumbnail}) {
     
     try {
         let normalizedTags = undefined;
@@ -60,7 +60,7 @@ async function update({id, name, intro, link, tags}) {
                 normalizedTags = tags.split(',').map(tag =>  mongoose.Types.ObjectId(tag.trim()));
             }
         }
-        const updated = await Post.findByIdAndUpdate(id, {name, intro, link, tags: normalizedTags}, {omitUndefined: true, new: true}).exec();
+        const updated = await Post.findByIdAndUpdate(id, {name, intro, link, tags: normalizedTags, thumbnail}, {omitUndefined: true, new: true}).exec();
         return updated;
     } catch(err) {
         console.error(err)
@@ -71,7 +71,8 @@ async function update({id, name, intro, link, tags}) {
 async function get(user, properties, sort = {name: 'asc'}, limit = 4, offset = 0) {
     try {
         let posts = null;
-
+        limit = parseInt(limit);
+        offser = parseInt(offset);
         // Filters can't be used both.
         const tags = properties?.tags;
         const postId = properties?.id;

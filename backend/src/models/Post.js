@@ -19,6 +19,9 @@ const PostSchema = mongoose.Schema({
         type: String,
         required: true,
     },
+    'thumbnail': {
+        type: String,
+    },
     tags: [
         {
             type: mongoose.Schema.Types.ObjectId,
