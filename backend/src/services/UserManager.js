@@ -41,9 +41,11 @@ async function create({name, email, password}) {
     }
 }
 
-async function remove({email}) {
+async function remove(property) {
     try {
-        const deleted = await User.findOneAndDelete(email).exec();
+        const id = property?.id;
+        const filter = id ? {_id: mongoose.Types.ObjectId(id)} : {...property};
+        const deleted = await User.findOneAndDelete(filter).exec();
         return deleted;
     } catch (err) {
         console.error(err);

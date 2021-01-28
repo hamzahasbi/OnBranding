@@ -8,6 +8,7 @@ const config = require('config');
 const db = process.env.DATABASE_URL || config.get('mongoTestURI');
 const {connectDB, closeDB} = require('../../config/database');
 const UserManager = require('../../src/services/UserManager');
+const SkillManager = require('../../src/services/SkillManager');
 const PostManager = require('../../src/services/PostManager');
 
 let token = {};
@@ -34,12 +35,14 @@ describe.only('Post Set Test Suit', async () => {
     after(async () => {
         try {
             const userRemoved = await UserManager.remove({email: UserLogin.valid.email});
-            skillIds.forEach(async (el) => {
+
+            await Promise.all(skillIds.map(async (el) => {
                 await SkillManager.remove({id: el});
-            })
-            postIds.forEach(async (el) => {
+            }));
+
+            await Promise.all(postIds.map(async (el) => {
                 await PostManager.remove({id: el});
-            })
+            }));
             
             closeDB();
         } catch(err) {
@@ -81,7 +84,7 @@ describe.only('Post Set Test Suit', async () => {
         expect(res.status).to.eq(201);
         expect(res.body).to.haveOwnProperty('ressource');
         const tags = res.body.ressource.tags;
-        expect(tags.length).to.equal(2);
+        expect(tags.length).to.equal(1);
 
     });
 
@@ -102,7 +105,7 @@ describe.only('Post Set Test Suit', async () => {
         expect(res.status).to.eq(200);
         expect(res.body).to.haveOwnProperty('ressource');
         const ressources = res.body.ressource;
-        expect(ressources.length).to.equal(3);
+        expect(ressources.length).to.equal(2);
 
     });
 
@@ -110,6 +113,47 @@ describe.only('Post Set Test Suit', async () => {
     it('Get list of all authenticated user\'s posts with query params & no filter', async () => {
 
         const res = await request(app).get('/api/post').auth(token, {type: 'bearer'}).query(qs);
+        expect(res.status).to.eq(200);
+        expect(res.body).to.haveOwnProperty('ressource');
+        const ressources = res.body.ressource;
+        expect(ressources.length).to.equal(1);
+
+    });
+
+    it('Get list of all user\'s posts with no query params by email', async () => {
+
+        const res = await request(app).get('/api/post/list').query({email: UserRegister.valid.email});
+        expect(res.status).to.eq(200);
+        expect(res.body).to.haveOwnProperty('ressource');
+        const ressources = res.body.ressource;
+        expect(ressources.length).to.equal(2);
+
+    });
+
+
+    it('Get list of all user\'s posts with query params & filter by email', async () => {
+
+        const res = await request(app).get('/api/post/list').query({...qs, email: UserRegister.valid.email, tags: '6011ae06739fa71dbf34d892'});
+        expect(res.status).to.eq(200);
+        expect(res.body).to.haveOwnProperty('ressource');
+        const ressources = res.body.ressource;
+        expect(ressources.length).to.equal(0);
+
+    }); 
+
+    it('Get list of all user\'s posts with query params & filter by email', async () => {
+
+        const res = await request(app).get('/api/post/list').query({...qs, email: UserRegister.valid.email, offset: 0, tags: skillIds[0].toString()});
+        expect(res.status).to.eq(200);
+        expect(res.body).to.haveOwnProperty('ressource');
+        const ressources = res.body.ressource;
+        expect(ressources.length).to.equal(1);
+
+    });
+
+    it('Get Post by id', async () => {
+
+        const res = await request(app).get('/api/post/list').query({email: UserRegister.valid.email, post: postIds[0].toString()});
         expect(res.status).to.eq(200);
         expect(res.body).to.haveOwnProperty('ressource');
         const ressources = res.body.ressource;

@@ -18,10 +18,8 @@ router.get('/', verify, async (req, res) => {
 
         const {limit, tags, offset, sort, post} = req.query;
         const user = mongoose.Types.ObjectId(req.user.id);
-        
-        const nTags = tags?.split(',')?.map(el => mongoose.Types.ObjectId(el));
-    
-        const all = await PostManager.get(user, {tags: nTags, id: post}, sort, limit, offset);
+            
+        const all = await PostManager.get(user, {tags, id: post}, sort, limit, offset);
         
         if (!all) {
             return res.status(500).json({errors: [{msg: 'The server encoutered an Error!'}]});
@@ -48,17 +46,16 @@ router.get('/list', async (req, res) => {
 
 
         const {email, tags, limit, offset, sort, post} = req.query;
-        const nTags = tags?.split(',')?.map(el => mongoose.Types.ObjectId(el));
 
-        const all = await PostManager.get({email}, {tags: nTags, id: post}, sort, limit, offset);
+        const all = await PostManager.get({email}, {tags, id: post}, sort, limit, offset);
         
         if (!all) {
             return res.status(500).json({errors: [{msg: 'The server encoutered an Error!'}]});
         }
 
-        
+        console.log(all);
         res.status(200).json({
-            ressource: all,
+            ...all
         })
         
     } catch (err) {
@@ -89,7 +86,7 @@ router.post('/add', postRules, validate, verify, async (req, res) => {
     }
 });
 
-// @route PATCH api/skill
+// @route PATCH api/post/update
 // @desc Route to create the author profile
 // @access Private
 router.patch('/update', validate, verify, async (req, res) => {
@@ -110,7 +107,7 @@ router.patch('/update', validate, verify, async (req, res) => {
 });
 
 
-// @route DELETE api/skill
+// @route DELETE api/post/remove
 // @desc Route to create the author profile
 // @access Private
 router.delete('/remove', verify, async (req, res) => {

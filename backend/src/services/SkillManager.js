@@ -1,4 +1,5 @@
 
+const mongoose = require('mongoose');
 const {Skill} = require('../models/Skill');
 
 async function create({name, description, icon}) {
@@ -31,9 +32,11 @@ async function getAll() {
     }
 }
 
-async function remove(properety) {
+async function remove(property) {
     try {
-        const deleted = await Skill.findOneAndDelete(properety).exec();
+        const id = property?.id;
+        const filter = id ? {_id: mongoose.Types.ObjectId(id)} : {...property};
+        const deleted = await Skill.findOneAndDelete(filter).exec();
         return deleted;
     } catch (err) {
         return null;

@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const PORT = process.env.PORT || 5000;
 
 
 // Connect Database.
@@ -18,5 +19,10 @@ app.use('/api/post', require(('../../src/routes/api/post')));
 
 // Errors Routes.
 app.use((err, req, res, next) => res.status(500).json({errors: err}));
+
+app.listen(PORT, () => {
+    console.log('server started on port ' + PORT);
+});
+
 
 module.exports = app;

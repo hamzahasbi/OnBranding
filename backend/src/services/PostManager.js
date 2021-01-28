@@ -3,7 +3,6 @@ const {Post} = require('../models/Post');
 const mongoose = require('mongoose');
 
 
-
 async function create({name, intro, link, tags, user, thumbnail}) {
     
     try {
@@ -39,9 +38,12 @@ async function create({name, intro, link, tags, user, thumbnail}) {
 }
 
 
-async function remove(properety) {
+async function remove(property) {
     try {
-        const deleted = await Post.findOneAndDelete(properety).exec();
+        
+        const id = property?.id;
+        const filter = id ? {_id: mongoose.Types.ObjectId(id)} : {...property};
+        const deleted = await Post.findOneAndDelete(filter).exec();
         return deleted;
     } catch (err) {
         return null;
@@ -71,18 +73,31 @@ async function update({id, name, intro, link, tags, thumbnail}) {
 async function get(user, properties, sort = {name: 'asc'}, limit = 4, offset = 0) {
     try {
         let posts = null;
+        let count = null;
         limit = parseInt(limit);
-        offser = parseInt(offset);
+        offset = parseInt(offset);
+    
+
         // Filters can't be used both.
         const tags = properties?.tags;
         const postId = properties?.id;
 
-        const filter = tags ? {'tags': { '$in': tags}} : (postId ? {'_id' : mongoose.Types.ObjectId(postId)} : {});
+        let normalizedTags = [];
+
+        if (tags) {
+            if (Array.isArray(tags)) {
+                normalizedTags = tags.map(tag => mongoose.Types.ObjectId(tag.trim()));
+            } else {
+                normalizedTags = tags.split(',').map(tag =>  mongoose.Types.ObjectId(tag.trim()));
+            }
+        }
+
+        const filter = tags ? {'tags': { '$in': normalizedTags}} : (postId ? {'_id' : mongoose.Types.ObjectId(postId)} : {});
 
         // public API.
         if (user.hasOwnProperty('email')) {
             const {email} = user;
-            posts = await Post.aggregate([
+            const query = Post.aggregate([
                 {
                     $match: filter
                 },
@@ -114,9 +129,21 @@ async function get(user, properties, sort = {name: 'asc'}, limit = 4, offset = 0
     
                 },
                 {
+                    $lookup: {
+                      from:'skills',
+                      as: 'tags',
+                      localField: 'tags',
+                      foreignField: '_id'
+                    }
+                },
+                {
                     $match: {'user.email': email}
-                }
-            ]).sort(sort).limit(limit).skip(offset).exec();
+                },
+               
+            ])
+            posts = await query.sort(sort).limit(limit).skip(offset).exec();
+            count = await query.count('count').exec();
+            
         }
         // Private API
         else {
@@ -125,13 +152,16 @@ async function get(user, properties, sort = {name: 'asc'}, limit = 4, offset = 0
                 limit,
                 skip: offset
             }
-            posts = await Post.find({user, ...filter}, null, options)
+            const query = Post.find({user, ...filter}, null, options)
+            posts = await query
                 .populate('user', 'name email avatar')
                 .populate('tags', 'name icon')
                 .exec();
+
+            count = await query.countDocuments().exec();
         
         }
-        return posts;
+        return {ressources: posts, count};
     } catch(err) {
         console.error(err);
         return null;
