@@ -102,7 +102,7 @@ router.delete('/remove', verify, async (req, res) => {
     try {
 
         const {id} = req.body;
-        const removed = await SkillManager.removebyId({id});
+        const removed = await SkillManager.remove({id});
         if(!removed) {
             return res.status(422).json({errors: [{msg: 'Unprocessable Entity'}]});
         }

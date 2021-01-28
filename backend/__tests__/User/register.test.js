@@ -11,7 +11,7 @@ describe('Registration Test Suite', async () => {
     
     before(async () => {
         try {
-            connectDB(db);
+            await connectDB(db);
         } catch (err) {
             console.error(err);
         }
@@ -19,7 +19,7 @@ describe('Registration Test Suite', async () => {
     
     after(async () => {
         try {
-            const removed = await remove(UserRegister.valid.email);
+            const removed = await remove({email: UserRegister.valid.email});
             closeDB();
         } catch(err) {
             console.error(err);
