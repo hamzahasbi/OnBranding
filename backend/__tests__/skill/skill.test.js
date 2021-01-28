@@ -20,8 +20,7 @@ describe('Skill Set Test Suit', async () => {
     
     before(async () => {
         try {
-            connectDB(db);
-            // const payload = await UserManager.create(UserRegister.valid);
+            await connectDB(db);
             const user = await request(app).post('/api/register').send(UserRegister.valid);
             token = user.body.token;
             const skill = await request(app).post('/api/skill/add').auth(token, {type: 'bearer'}).send({...newSkill, name: "c"});

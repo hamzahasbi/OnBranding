@@ -21,7 +21,7 @@ parallel('Authentication Test Suit', async () => {
     
     after(async () => {
         try {
-            const removed = await remove(UserLogin.valid.email);
+            const removed = await remove({email: UserLogin.valid.email});
             closeDB();
         } catch(err) {
             console.error(err);

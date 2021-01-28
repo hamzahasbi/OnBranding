@@ -14,11 +14,11 @@ const PostManager = require('../../src/services/PostManager');
 let token = {};
 let skillIds = [], postIds = [];
 
-describe.only('Post Set Test Suit', async () => {
+describe('Post Set Test Suit', async () => {
     
     before(async () => {
         try {
-            connectDB(db);
+            await connectDB(db);
             const user = await request(app).post('/api/register').send(UserRegister.valid);
             token = user.body.token;
             const skill = await request(app).post('/api/skill/add').auth(token, {type: 'bearer'}).send(newSkill);
@@ -105,7 +105,8 @@ describe.only('Post Set Test Suit', async () => {
         expect(res.status).to.eq(200);
         expect(res.body).to.haveOwnProperty('ressource');
         const ressources = res.body.ressource;
-        expect(ressources.length).to.equal(2);
+        const count = res.body.count;
+        expect(ressources.length).to.equal(count);
 
     });
 
@@ -116,8 +117,8 @@ describe.only('Post Set Test Suit', async () => {
         expect(res.status).to.eq(200);
         expect(res.body).to.haveOwnProperty('ressource');
         const ressources = res.body.ressource;
-        expect(ressources.length).to.equal(1);
-
+        const count = res.body.count;
+        expect(ressources.length).to.equal(count);
     });
 
     it('Get list of all user\'s posts with no query params by email', async () => {
@@ -126,7 +127,8 @@ describe.only('Post Set Test Suit', async () => {
         expect(res.status).to.eq(200);
         expect(res.body).to.haveOwnProperty('ressource');
         const ressources = res.body.ressource;
-        expect(ressources.length).to.equal(2);
+        const count = res.body.count;
+        expect(ressources.length).to.equal(count);
 
     });
 
@@ -137,8 +139,8 @@ describe.only('Post Set Test Suit', async () => {
         expect(res.status).to.eq(200);
         expect(res.body).to.haveOwnProperty('ressource');
         const ressources = res.body.ressource;
-        expect(ressources.length).to.equal(0);
-
+        const count = res.body.count;
+        expect(ressources.length).to.equal(count);
     }); 
 
     it('Get list of all user\'s posts with query params & filter by email', async () => {
@@ -147,7 +149,8 @@ describe.only('Post Set Test Suit', async () => {
         expect(res.status).to.eq(200);
         expect(res.body).to.haveOwnProperty('ressource');
         const ressources = res.body.ressource;
-        expect(ressources.length).to.equal(1);
+        const count = res.body.count;
+        expect(ressources.length).to.equal(count);
 
     });
 
@@ -157,7 +160,8 @@ describe.only('Post Set Test Suit', async () => {
         expect(res.status).to.eq(200);
         expect(res.body).to.haveOwnProperty('ressource');
         const ressources = res.body.ressource;
-        expect(ressources.length).to.equal(1);
+        const count = res.body.count;
+        expect(ressources.length).to.equal(count);
 
     });
 

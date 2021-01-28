@@ -143,6 +143,7 @@ async function get(user, properties, sort = {name: 'asc'}, limit = 4, offset = 0
             ])
             posts = await query.sort(sort).limit(limit).skip(offset).exec();
             count = await query.count('count').exec();
+            count = count[0]?.count || 0;
             
         }
         // Private API
@@ -161,7 +162,7 @@ async function get(user, properties, sort = {name: 'asc'}, limit = 4, offset = 0
             count = await query.countDocuments().exec();
         
         }
-        return {ressources: posts, count};
+        return {ressource: posts, count};
     } catch(err) {
         console.error(err);
         return null;

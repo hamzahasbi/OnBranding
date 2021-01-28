@@ -27,7 +27,7 @@ router.get('/', verify, async (req, res) => {
 
         
         res.status(200).json({
-            ressource: all,
+            ...all
         })
         
     } catch (err) {
@@ -53,7 +53,6 @@ router.get('/list', async (req, res) => {
             return res.status(500).json({errors: [{msg: 'The server encoutered an Error!'}]});
         }
 
-        console.log(all);
         res.status(200).json({
             ...all
         })
