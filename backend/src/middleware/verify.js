@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const config = require('config');
 
-function verification(req, res, next) {
+module.exports = function (req, res, next) {
   const tokenHeader = req.header('Authorization');
 
   if (!tokenHeader) {
@@ -21,6 +21,4 @@ function verification(req, res, next) {
   } catch (err) {
     return res.status(401).json({ errors: [{ msg: 'Your token has expired' }] });
   }
-}
-
-module.exports = verification;
+};
