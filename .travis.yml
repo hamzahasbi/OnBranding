@@ -6,7 +6,6 @@ notifications:
 
 
 test: &test
-  type: pull_request
   stage: Test
   dist: bionic
   os: linux
@@ -30,6 +29,7 @@ test: &test
 jobs:
   include:
     - <<: *test
+      if: type = pull_request
       env:
       - WORKING_DIR="$TRAVIS_BUILD_DIR/backend"
 
