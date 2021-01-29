@@ -1,84 +1,87 @@
 const mongoose = require('mongoose');
 
-const ProfileSchema = new mongoose.Schema({
+const ProfileSchema = new mongoose.Schema(
+  {
     user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'user'
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'user'
     },
     company: {
-        type: String
+      type: String
     },
     websites: [
-        {
-            twitter: {
-                type: String
-            },
-            kattis: {
-                type: String
-            },
-            github: {
-                type: String
-            },
-            coffee: {
-                type: String
-            },
-            dev: {
-                type: String
-            },
-            medium: {
-                type: String
-            },
-            codeforeces: {
-                type: String
-            },
-            other: {
-                type: [String]
-            }
+      {
+        twitter: {
+          type: String
+        },
+        kattis: {
+          type: String
+        },
+        github: {
+          type: String
+        },
+        coffee: {
+          type: String
+        },
+        dev: {
+          type: String
+        },
+        medium: {
+          type: String
+        },
+        codeforeces: {
+          type: String
+        },
+        other: {
+          type: [String]
         }
+      }
     ],
     location: {
-        type: String,
-        required: true,
+      type: String,
+      required: true
     },
     status: {
-        type: String,
-        required: true,
+      type: String,
+      required: true
     },
-    skills: [{
+    skills: [
+      {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'skill',
-        required: true,
-    }],
-    bio: {
-        type: String,
         required: true
+      }
+    ],
+    bio: {
+      type: String,
+      required: true
     },
     interest: {
-        type: String,
-        required: true
+      type: String,
+      required: true
     },
     projects: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'project'
-        }
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'project'
+      }
     ],
     posts: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'post'
-        }
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'post'
+      }
     ],
     profiltags: {
-        type: [String],
+      type: [String]
     },
     resume: {
-        type: String,
+      type: String
     }
-
-
-}, {timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }});
+  },
+  { timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' } }
+);
 
 module.exports = {
-    Profile : mongoose.model('profile', ProfileSchema),
+  Profile: mongoose.model('profile', ProfileSchema)
 };

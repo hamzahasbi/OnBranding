@@ -1,6 +1,3 @@
-const {Profile} = require('../models/Profile');
+const { Profile } = require('../models/Profile');
 
-
-async function create() {
-    
-}
+// async function create() {}

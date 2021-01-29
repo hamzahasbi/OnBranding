@@ -1,25 +1,43 @@
 {
-    "env": {
-        "es2020": true,
-        "node": true
-    },
-    "extends": [
-        "standard"
-    ],
+    "extends": "airbnb-base",
     "parserOptions": {
-        // Only ESLint 6.2.0 and later support ES2020.
-        "ecmaVersion": 11,
-        "sourceType": "module"
+      "sourceType": "script",
+      "ecmaVersion": 2020
+
     },
     "rules": {
-        "node/exports-style": ["error", "module.exports"],
-        "node/no-deprecated-api": "error",
-        "node/prefer-global/buffer": ["error", "always"],
-        "node/prefer-global/console": ["error", "always"],
-        "node/prefer-global/process": ["error", "always"],
-        "node/prefer-global/url-search-params": ["error", "always"],
-        "node/prefer-global/url": ["error", "always"],
-        "node/prefer-promises/dns": "error",
-        "node/prefer-promises/fs": "error"
+      "strict": 0,
+      "no-empty-function": "warn",
+      "no-param-reassign": [
+        "error",
+        { "props": false }
+      ],
+      "quotes": ["warn", "single"],
+      "func-names": 0,
+      "comma-dangle": 0,
+      "prefer-template": 0,
+      "camelcase": 0,
+      "no-underscore-dangle": 0,
+      "consistent-return": 0,
+      "no-unused-expressions": 0,
+      "no-console": 0,
+      "no-unused-vars": 0,
+      "brace-style": 0,
+      "no-prototype-builtins": 0,
+      "no-bitwise": ["error", { "allow": ["~"] }]
+    },
+    "globals": {
+      "describe": true,
+      "it": true,
+      "after": true,
+      "afterEach": true,
+      "before": true,
+      "beforeEach": true,
+      "should": true
+    },
+    "env": {
+      "node": true,
+      "mocha": true,
+      "es6": true
     }
-}
+  }
