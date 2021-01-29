@@ -1,11 +1,11 @@
-const validPost = {
+const validProject = {
 	"name": "first blog",
 	"intro": "jskhdjskdjskhdjskdjskhdjskdjskhdjskdjskhdjskdjskhdjskdjskhdjskdjskhdjskdjskhdjskdjskhdjskdjskhdjskdjskhdjskdjskhdjskdjskhdjskdjskhdjskdjskhdjskdjskhdjskd",
 	"link": "https://www.youtube.com/watch?v=YgFyi74DVjc",
 	"thumbnail": "https://www.youtube.com/watch?v=YgFyi74DVjc"
 };
 
-const invalidPost = {
+const invalidProject = {
 	"name": "first blog",
 	"intro": "jskhdjskdjskhdjskd",
 	"link": "https://www.youtube.com/watch?v=YgFyi74DVjc",
@@ -18,7 +18,6 @@ const qs = {
 	sort: "updated_at",
 	offset: 1,
 };
-
 module.exports = {
-    validPost, invalidPost, qs
+    validProject, invalidProject, qs
 }

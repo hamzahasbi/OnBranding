@@ -6,6 +6,7 @@ notifications:
 
 
 test: &test
+  type: pull_request
   stage: Test
   dist: bionic
   os: linux

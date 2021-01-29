@@ -19,7 +19,7 @@ const PostSchema = mongoose.Schema({
         type: String,
         required: true,
     },
-    'thumbnail': {
+    thumbnail: {
         type: String,
     },
     tags: [

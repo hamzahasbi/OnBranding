@@ -2,13 +2,13 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const verify = require('../../middleware/verify');
-const {Post} = require('../../models/Post');
-const PostManager = require('../../services/PostManager');
+const {Project} = require('../../models/Project');
+const ProjectManager = require('../../services/ProjectManager');
 const {validate, postRules} = require('../../services/validationManager');
 
 
 
-// @route GET api/post
+// @route GET api/project
 // @desc Route for a specific skill tag
 // @access Private
 router.get('/', verify, async (req, res) => {
@@ -16,10 +16,10 @@ router.get('/', verify, async (req, res) => {
     try {
 
 
-        const {limit, tags, offset, sort, post} = req.query;
+        const {limit, tags, offset, sort, project} = req.query;
         const user = mongoose.Types.ObjectId(req.user.id);
             
-        const all = await PostManager.get(user, {tags, id: post}, sort, limit, offset);
+        const all = await ProjectManager.get(user, {tags, id: project}, sort, limit, offset);
         
         if (!all) {
             return res.status(500).json({errors: [{msg: 'The server encoutered an Error!'}]});
@@ -37,7 +37,7 @@ router.get('/', verify, async (req, res) => {
 });
 
 
-// @route GET api/post
+// @route GET api/project/list
 // @desc Route for a specific skill tag
 // @access Public
 router.get('/list', async (req, res) => {
@@ -45,9 +45,9 @@ router.get('/list', async (req, res) => {
     try {
 
 
-        const {email, tags, limit, offset, sort, post} = req.query;
+        const {email, tags, limit, offset, sort, project} = req.query;
 
-        const all = await PostManager.get({email}, {tags, id: post}, sort, limit, offset);
+        const all = await ProjectManager.get({email}, {tags, id: project}, sort, limit, offset);
         
         if (!all) {
             return res.status(500).json({errors: [{msg: 'The server encoutered an Error!'}]});
@@ -63,7 +63,7 @@ router.get('/list', async (req, res) => {
     }
 });
 
-// @route POST api/post/add
+// @route POST api/project/add
 // @desc Route to create the author profile
 // @access Private
 router.post('/add', postRules, validate, verify, async (req, res) => {
@@ -72,7 +72,7 @@ router.post('/add', postRules, validate, verify, async (req, res) => {
 
         const {name, intro, link, tags, thumbnail} = req.body;
         const user = req.user;
-        const created = await(PostManager.create({name, intro, link, tags, user, thumbnail}));
+        const created = await(ProjectManager.create({name, intro, link, tags, user, thumbnail}));
         if(!created) {
             return res.status(500).json({errors: [{msg: 'The server encoutered an Error!'}]});
         }
@@ -85,7 +85,7 @@ router.post('/add', postRules, validate, verify, async (req, res) => {
     }
 });
 
-// @route PATCH api/post/update
+// @route PATCH api/project/update
 // @desc Route to create the author profile
 // @access Private
 router.patch('/update', validate, verify, async (req, res) => {
@@ -93,7 +93,7 @@ router.patch('/update', validate, verify, async (req, res) => {
     try {
 
         const {id, name, intro, tags, link, thumbnail} = req.body;
-        const updated = await PostManager.update({id, name, intro, tags, link, thumbnail});
+        const updated = await ProjectManager.update({id, name, intro, tags, link, thumbnail});
         if(!updated) {
             return res.status(422).json({errors: [{msg: 'Unprocessable Entity'}]});
         }
@@ -106,7 +106,7 @@ router.patch('/update', validate, verify, async (req, res) => {
 });
 
 
-// @route DELETE api/post/remove
+// @route DELETE api/project/remove
 // @desc Route to create the author profile
 // @access Private
 router.delete('/remove', verify, async (req, res) => {
@@ -114,7 +114,7 @@ router.delete('/remove', verify, async (req, res) => {
     try {
 
         const {id} = req.body;
-        const removed = await PostManager.remove({id});
+        const removed = await ProjectManager.remove({id});
         if(!removed) {
             return res.status(422).json({errors: [{msg: 'Unprocessable Entity'}]});
         }
