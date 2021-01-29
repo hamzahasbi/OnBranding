@@ -1,5 +1,5 @@
 {
-  "name": "onbranding-backend",
+  "name": "backend",
   "version": "1.0.0",
   "description": "This package is created to handle the project's API",
   "main": "server.js",
@@ -7,6 +7,9 @@
     "test": "mocha \"__tests__/**/*.test.js\" --recursive --timeout 20000 --exit",
     "start": "node server.js",
     "develop": "nodemon server.js"
+  },
+  "engines": {
+    "node": ">=8.10.0"
   },
   "repository": {
     "type": "git",
@@ -31,6 +34,11 @@
   "devDependencies": {
     "chai": "^4.2.0",
     "concurrently": "^5.3.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-config-standard": "^14.1.1",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
     "mocha": "^8.2.1",
     "mocha.parallel": "^0.15.6",
     "mockgoose": "^8.0.4",
