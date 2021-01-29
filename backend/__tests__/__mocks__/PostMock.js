@@ -18,6 +18,7 @@ const qs = {
 	sort: "updated_at",
 	offset: 1,
 };
+
 module.exports = {
-    validPost, invalidPost,qs
+    validPost, invalidPost, qs
 }
