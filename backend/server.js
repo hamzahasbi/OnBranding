@@ -1,10 +1,10 @@
 const express = require('express');
 const config = require('config');
+const path = require('path');
+const { connectDB } = require('./config/database');
 
 const app = express();
 const PORT = process.env.PORT || config.get('PORT');
-const { connectDB } = require('./config/database');
-
 const db = process.env.DATABASE_URL || config.get('mongoURI');
 
 // Connect Database.
@@ -13,6 +13,16 @@ connectDB(db);
 // Init Middlware.
 app.use(express.json({ extended: false }));
 app.use('/static', express.static(`${__dirname}/public`));
+
+// Serve static assets if in production
+if (process.env.NODE_ENV === 'production') {
+  // Set static folder
+  app.use(express.static('client/build'));
+
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+  });
+}
 
 app.get('/', (req, res) => res.send('Nothing to see Here API is UP and Runing'));
 
