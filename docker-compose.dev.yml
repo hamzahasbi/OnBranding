@@ -1,0 +1,116 @@
+version: "3"
+services:
+  node:
+    image: node:latest
+    restart: on-failure
+    ports:
+      - "4000:4000"
+    links:
+      - mongodb
+      - redis
+    depends_on:
+      - mongodb
+      - redis
+    volumes:
+      - .:/project/onbranding
+    working_dir: /project/onbranding
+    command: yarn api-dev
+    networks:
+      - prod
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100MB"
+        max-file: "3"
+
+  nginx:
+    image: nginx:latest
+    links:
+     - node
+     - mongodb
+     - redis
+    depends_on:
+      - node
+    networks:
+      - prod
+    volumes:
+      - .:/project/onbranding/
+      - ./branding.conf:/etc/nginx/conf.d/site.conf
+      # - certbot-etc:/etc/letsencrypt
+      # - certbot-var:/var/lib/letsencrypt
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      - NGINX_PORT=80
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100MB"
+        max-file: "3"
+  # certbot:
+  #   image: certbot/certbot
+  #   container_name: certbot
+  #   volumes:
+  #     - certbot-etc:/etc/letsencrypt
+  #     - certbot-var:/var/lib/letsencrypt
+  #     - web-root:/var/www/html
+  #   depends_on:
+  #     - node
+  #   command: certonly --webroot --webroot-path=/var/www/html --email hamza.hasbi@gmail.com --agree-tos --no-eff-email --staging -d onbranding.tech  -d www.onbranding.tech
+  
+  mongodb:
+    image: mongo:latest
+    env_file:
+      - ./.env
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb:/data/db/
+    networks:
+      - prod
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100MB"
+        max-file: "3"
+    command: mongod --auth
+
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    networks:
+      - prod
+    volumes:
+      - redis:/data/
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100MB"
+        max-file: "3"
+
+  admin:
+    image: mongo-express
+    depends_on:
+      - mongodb
+    links:
+      - mongodb
+    restart: always
+    networks:
+      - prod
+    env_file:
+      - ./.env
+    ports:
+      - "8080:8081"
+
+networks:
+  prod:
+    driver: bridge
+
+volumes:
+  mongodb:
+  redis:
