@@ -16,7 +16,6 @@ const loginRules = [
 
 const profileRules = [
   check('status', 'Status is required').notEmpty(),
-  check('location', 'Location is required').notEmpty(),
   check('bio', 'Bio is required').notEmpty(),
   check('skills', 'Skills are required').notEmpty(),
   check('interest', 'Interest is required').notEmpty()

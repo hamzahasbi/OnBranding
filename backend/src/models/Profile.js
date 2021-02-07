@@ -1,47 +1,46 @@
 const mongoose = require('mongoose');
 
+// {
+//   twitter: {
+//     type: String
+//   },
+//   kattis: {
+//     type: String
+//   },
+//   github: {
+//     type: String
+//   },
+//   coffee: {
+//     type: String
+//   },
+//   dev: {
+//     type: String
+//   },
+//   medium: {
+//     type: String
+//   },
+//   codeforeces: {
+//     type: String
+//   },
+//   other: {
+//     type: [String]
+//   }
+// }
 const ProfileSchema = new mongoose.Schema(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'user'
     },
-    company: {
-      type: String
-    },
-    websites: [
-      {
-        twitter: {
-          type: String
-        },
-        kattis: {
-          type: String
-        },
-        github: {
-          type: String
-        },
-        coffee: {
-          type: String
-        },
-        dev: {
-          type: String
-        },
-        medium: {
-          type: String
-        },
-        codeforeces: {
-          type: String
-        },
-        other: {
-          type: [String]
-        }
-      }
-    ],
-    location: {
+    status: {
       type: String,
       required: true
     },
-    status: {
+    bio: {
+      type: String,
+      required: true
+    },
+    interest: {
       type: String,
       required: true
     },
@@ -52,14 +51,14 @@ const ProfileSchema = new mongoose.Schema(
         required: true
       }
     ],
-    bio: {
+    location: {
       type: String,
-      required: true
+      required: false
     },
-    interest: {
-      type: String,
-      required: true
+    company: {
+      type: String
     },
+    websites: [String],
     projects: [
       {
         type: mongoose.Schema.Types.ObjectId,
