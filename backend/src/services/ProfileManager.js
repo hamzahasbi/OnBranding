@@ -12,9 +12,10 @@ async function create({
     try {
         const normalizedTags = ReferenceEnhancer.normalize(skills);
         const uid = mongoose.Types.ObjectId(user?.id);
-        const profile = new Profile(
-            uid, status, bio, interest, normalizedTags
-        );
+        const profile = new Profile({
+            status, bio, interest, skills: normalizedTags
+        });
+        profile.user = uid;
         if (posts?.length) {
             profile.posts = ReferenceEnhancer.normalize(posts);
         }
@@ -74,9 +75,20 @@ async function update({
     }
   }
 
+async function remove(property) {
+    try {
+        const id = property?.id;
+        const filter = id ? { _id: mongoose.Types.ObjectId(id) } : { ...property };
+        const deleted = await Profile.findOneAndDelete(filter).exec();
+        return deleted;
+      } catch (err) {
+        return null;
+      }
+}
 const ProfileManager = {
     create,
     update,
+    remove
 };
 
 module.exports = ProfileManager;

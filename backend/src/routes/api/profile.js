@@ -28,7 +28,7 @@ const ProfileManager = require('../../services/ProfileManager');
 //   }
 // });
 
-// @route POST api/profile
+// @route POST api/profile/add
 // @desc Route to create the author profile
 // @access Private
 router.post('/add', verify, profileRules, validate, async (req, res) => {
@@ -60,6 +60,62 @@ router.post('/add', verify, profileRules, validate, async (req, res) => {
       res.status(201).json({ ressource: created });
   } catch (err) {
     console.error(err);
+    return res
+      .status(500)
+      .json({ errors: [{ msg: 'The server encountered an Error!' }] });
+  }
+});
+
+// @route PATCH api/profile/update
+// @desc Route to create the author profile
+// @access Private
+router.patch('/update', validate, verify, async (req, res) => {
+  try {
+    const {
+      id, company, websites, location, status,
+      skills, bio, interest, projects, posts, profiltags, resume
+  } = req.body;
+    const updated = await ProfileManager.update({
+      id,
+      company,
+      websites,
+      location,
+      status,
+      skills,
+      bio,
+      interest,
+      projects,
+      posts,
+      profiltags,
+      resume
+  });
+    if (!updated) {
+      return res
+        .status(422)
+        .json({ errors: [{ msg: 'Unprocessable Entity' }] });
+    }
+    res.status(201).json({ ressource: updated });
+  } catch (err) {
+    return res
+      .status(500)
+      .json({ errors: [{ msg: 'The server encountered an Error!' }] });
+  }
+});
+
+// @route DELETE api/post/remove
+// @desc Route to create the author profile
+// @access Private
+router.delete('/remove', verify, async (req, res) => {
+  try {
+    const { id } = req.body;
+    const removed = await ProfileManager.remove({ id });
+    if (!removed) {
+      return res
+        .status(422)
+        .json({ errors: [{ msg: 'Unprocessable Entity' }] });
+    }
+    res.status(200).json({ ressource: removed });
+  } catch (err) {
     return res
       .status(500)
       .json({ errors: [{ msg: 'The server encountered an Error!' }] });

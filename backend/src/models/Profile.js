@@ -26,11 +26,12 @@ const mongoose = require('mongoose');
 //     type: [String]
 //   }
 // }
-const ProfileSchema = new mongoose.Schema(
+const ProfileSchema = mongoose.Schema(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'user'
+      ref: 'user',
+      required: true
     },
     status: {
       type: String,
