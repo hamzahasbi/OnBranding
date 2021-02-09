@@ -35,7 +35,8 @@ router.post('/add', verify, profileRules, validate, async (req, res) => {
   try {
     const {
         company, websites, location, status,
-        skills, bio, interest, projects, posts, profiltags, resume
+        skills, bio, interest, projects, posts, profiltags, resume,
+        education
     } = req.body;
       const { user } = req;
       const created = await ProfileManager.create({
@@ -50,7 +51,8 @@ router.post('/add', verify, profileRules, validate, async (req, res) => {
         projects,
         posts,
         profiltags,
-        resume
+        resume,
+        education
     });
       if (!created) {
         return res
@@ -73,9 +75,13 @@ router.patch('/update', validate, verify, async (req, res) => {
   try {
     const {
       id, company, websites, location, status,
-      skills, bio, interest, projects, posts, profiltags, resume
-  } = req.body;
+      skills, bio, interest, projects, posts, profiltags, resume,
+      education
+    } = req.body;
+    const { user } = req;
+
     const updated = await ProfileManager.update({
+      user,
       id,
       company,
       websites,
@@ -87,7 +93,8 @@ router.patch('/update', validate, verify, async (req, res) => {
       projects,
       posts,
       profiltags,
-      resume
+      resume,
+      education
   });
     if (!updated) {
       return res

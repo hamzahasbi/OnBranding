@@ -11,6 +11,7 @@ class Normalizer {
             const target = property ?? this.model;
             let res = [];
 
+            if (!target) return null;
             if (Array.isArray(target)) {
                 res = target.map((tag) => (this.isReference
                     ? mongoose.Types.ObjectId(tag.toString().trim())
