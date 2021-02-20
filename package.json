@@ -13,7 +13,7 @@
     "format": "yarn prettier --write",
     "lint": "yarn workspaces run eslint",
     "build": "yarn workspaces run build",
-    "check-format": "yarn prettier --list-different",
+    "check-format": "yarn prettier --check",
     "validate": "npm-run-all --parallel check-format lint"
   },
   "workspaces": [
