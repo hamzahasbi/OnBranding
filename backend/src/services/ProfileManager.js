@@ -1,6 +1,6 @@
-const mongoose = require("mongoose");
-const { Profile } = require("../models/Profile");
-const Normalizer = require("../helpers/normalizer");
+const mongoose = require('mongoose');
+const { Profile } = require('../models/Profile');
+const Normalizer = require('../helpers/normalizer');
 
 const ReferenceEnhancer = new Normalizer(true);
 const FieldEnhancer = new Normalizer(false);
@@ -108,7 +108,7 @@ async function update({
     }
 }
 
-async function get(user, sort = { name: "asc" }, limit = 4, offset = 0) {
+async function get(user, sort = { name: 'asc' }, limit = 4, offset = 0) {
     try {
         let profile = null;
         let count = null;
@@ -124,10 +124,10 @@ async function get(user, sort = { name: "asc" }, limit = 4, offset = 0) {
         };
         const query = Profile.find(filter, null, options);
         profile = await query
-            .populate("user", "name email avatar")
-            .populate("skills", "name icon intro")
-            .populate("posts", "name link thumbnail")
-            .populate("projects", "name link thumbnail")
+            .populate('user', 'name email avatar')
+            .populate('skills', 'name icon intro')
+            .populate('posts', 'name link thumbnail')
+            .populate('projects', 'name link thumbnail')
             .exec();
 
         count = await query.countDocuments().exec();

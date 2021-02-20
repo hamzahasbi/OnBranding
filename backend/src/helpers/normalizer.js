@@ -14,13 +14,14 @@ class Normalizer {
             if (!target) return null;
             if (Array.isArray(target)) {
                 res = target.map((tag) => (this.isReference
-                    ? mongoose.Types.ObjectId(tag.toString().trim())
-                    : tag.trim()));
+                        ? mongoose.Types.ObjectId(tag.toString().trim())
+                        : tag.trim()),);
             } else {
                 res = target
-                .split(',')
-                .map((tag) => (this.isReference ? mongoose.Types.ObjectId(tag.trim())
-                : tag.trim()));
+                    .split(',')
+                    .map((tag) => (this.isReference
+                            ? mongoose.Types.ObjectId(tag.trim())
+                            : tag.trim()),);
             }
             return res;
         } catch (exception) {

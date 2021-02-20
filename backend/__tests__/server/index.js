@@ -23,7 +23,7 @@ app.use('/api/profile', require('../../src/routes/api/profile'));
 app.use((err, req, res, next) => res.status(500).json({ errors: err }));
 
 app.listen(PORT, () => {
-  console.log(`server started on port ${PORT}`);
+    console.log(`server started on port ${PORT}`);
 });
 
 module.exports = app;

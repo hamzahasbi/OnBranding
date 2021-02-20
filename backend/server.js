@@ -16,15 +16,15 @@ app.use('/static', express.static(`${__dirname}/public`));
 
 // Serve static assets if in production
 if (process.env.NODE_ENV === 'production') {
-  // Set static folder
-  app.use(express.static('client/build'));
+    // Set static folder
+    app.use(express.static('client/build'));
 
-  app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
-  });
+    app.get('*', (req, res) => {
+        res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+    });
 }
 
-app.get('/', (req, res) => res.send('Nothing to see Here API is UP and Runing'));
+app.get('/', (req, res) => res.send('Nothing to see Here API is UP and Runing'),);
 
 // Defining Routes.
 app.use('/api/profile', require('./src/routes/api/profile'));
@@ -37,5 +37,5 @@ app.use('/api/project', require('./src/routes/api/project'));
 app.use((err, req, res, next) => res.status(500).json({ errors: err }));
 
 app.listen(PORT, () => {
-  console.log(`server started on port ${PORT}`);
+    console.log(`server started on port ${PORT}`);
 });

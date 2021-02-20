@@ -1,15 +1,15 @@
-const express = require("express");
+const express = require('express');
 
 const router = express.Router();
-const verify = require("../../middleware/verify");
-const Profile = require("../../models/Profile");
-const { validate, profileRules } = require("../../services/validationManager");
-const ProfileManager = require("../../services/ProfileManager");
+const verify = require('../../middleware/verify');
+const Profile = require('../../models/Profile');
+const { validate, profileRules } = require('../../services/validationManager');
+const ProfileManager = require('../../services/ProfileManager');
 
 // @route GET api/profile
 // @desc Route for the author profile
 // @access Private
-router.get("/", verify, async (req, res) => {
+router.get('/', verify, async (req, res) => {
     try {
         const { limit, offset, sort } = req.query;
         const { user } = req;
@@ -19,7 +19,7 @@ router.get("/", verify, async (req, res) => {
         if (!all) {
             return res
                 .status(500)
-                .json({ errors: [{ msg: "The server encoutered an Error!" }] });
+                .json({ errors: [{ msg: 'The server encoutered an Error!' }] });
         }
 
         res.status(200).json({
@@ -29,14 +29,14 @@ router.get("/", verify, async (req, res) => {
         console.log(err);
         return res
             .status(500)
-            .json({ errors: [{ msg: "The server encoutered an Error!" }] });
+            .json({ errors: [{ msg: 'The server encoutered an Error!' }] });
     }
 });
 
 // @route POST api/profile/add
 // @desc Route to create the author profile
 // @access Private
-router.post("/add", verify, profileRules, validate, async (req, res) => {
+router.post('/add', verify, profileRules, validate, async (req, res) => {
     try {
         const {
             company,
@@ -71,21 +71,21 @@ router.post("/add", verify, profileRules, validate, async (req, res) => {
         if (!created) {
             return res
                 .status(500)
-                .json({ errors: [{ msg: "The server encoutered an Error!" }] });
+                .json({ errors: [{ msg: 'The server encoutered an Error!' }] });
         }
         res.status(201).json({ ressource: created });
     } catch (err) {
         console.error(err);
         return res
             .status(500)
-            .json({ errors: [{ msg: "The server encountered an Error!" }] });
+            .json({ errors: [{ msg: 'The server encountered an Error!' }] });
     }
 });
 
 // @route PATCH api/profile/update
 // @desc Route to create the author profile
 // @access Private
-router.patch("/update", validate, verify, async (req, res) => {
+router.patch('/update', validate, verify, async (req, res) => {
     try {
         const {
             id,
@@ -123,33 +123,33 @@ router.patch("/update", validate, verify, async (req, res) => {
         if (!updated) {
             return res
                 .status(422)
-                .json({ errors: [{ msg: "Unprocessable Entity" }] });
+                .json({ errors: [{ msg: 'Unprocessable Entity' }] });
         }
         res.status(201).json({ ressource: updated });
     } catch (err) {
         return res
             .status(500)
-            .json({ errors: [{ msg: "The server encountered an Error!" }] });
+            .json({ errors: [{ msg: 'The server encountered an Error!' }] });
     }
 });
 
 // @route DELETE api/post/remove
 // @desc Route to create the author profile
 // @access Private
-router.delete("/remove", verify, async (req, res) => {
+router.delete('/remove', verify, async (req, res) => {
     try {
         const { id } = req.body;
         const removed = await ProfileManager.remove({ id });
         if (!removed) {
             return res
                 .status(422)
-                .json({ errors: [{ msg: "Unprocessable Entity" }] });
+                .json({ errors: [{ msg: 'Unprocessable Entity' }] });
         }
         res.status(200).json({ ressource: removed });
     } catch (err) {
         return res
             .status(500)
-            .json({ errors: [{ msg: "The server encountered an Error!" }] });
+            .json({ errors: [{ msg: 'The server encountered an Error!' }] });
     }
 });
 
