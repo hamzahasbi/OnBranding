@@ -1,24 +1,26 @@
 const validPost = {
-	"name": "first blog",
-	"intro": "jskhdjskdjskhdjskdjskhdjskdjskhdjskdjskhdjskdjskhdjskdjskhdjskdjskhdjskdjskhdjskdjskhdjskdjskhdjskdjskhdjskdjskhdjskdjskhdjskdjskhdjskdjskhdjskdjskhdjskd",
-	"link": "https://www.youtube.com/watch?v=YgFyi74DVjc",
-	"thumbnail": "https://www.youtube.com/watch?v=YgFyi74DVjc"
+    name: 'first blog',
+    intro:
+        'jskhdjskdjskhdjskdjskhdjskdjskhdjskdjskhdjskdjskhdjskdjskhdjskdjskhdjskdjskhdjskdjskhdjskdjskhdjskdjskhdjskdjskhdjskdjskhdjskdjskhdjskdjskhdjskdjskhdjskd',
+    link: 'https://www.youtube.com/watch?v=YgFyi74DVjc',
+    thumbnail: 'https://www.youtube.com/watch?v=YgFyi74DVjc',
 };
 
 const invalidPost = {
-	"name": "first blog",
-	"intro": "jskhdjskdjskhdjskd",
-	"link": "https://www.youtube.com/watch?v=YgFyi74DVjc",
-	"thumbnail": "https://www.youtube.com/watch?v=YgFyi74DVjc"
+    name: 'first blog',
+    intro: 'jskhdjskdjskhdjskd',
+    link: 'https://www.youtube.com/watch?v=YgFyi74DVjc',
+    thumbnail: 'https://www.youtube.com/watch?v=YgFyi74DVjc',
 };
 
-
 const qs = {
-	limit: 1,
-	sort: "updated_at",
-	offset: 1,
+    limit: 1,
+    sort: 'updated_at',
+    offset: 1,
 };
 
 module.exports = {
-    validPost, invalidPost, qs
-}
+    validPost,
+    invalidPost,
+    qs,
+};

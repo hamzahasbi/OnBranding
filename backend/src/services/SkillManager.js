@@ -1,33 +1,30 @@
-
 const mongoose = require('mongoose');
-const {Skill} = require('../models/Skill');
+const { Skill } = require('../models/Skill');
 
-async function create({name, description, icon}) {
-    
+async function create({ name, description, icon }) {
     try {
-
-        let skill = new Skill({
-            name
+        const skill = new Skill({
+            name,
         });
         if (description) skill.description = description;
         if (icon) skill.icon = icon;
-    
+
         await skill.save();
-        
+
         return skill;
-    } catch(err) {
+    } catch (err) {
         return null;
     }
-
 }
 
 async function getAll() {
     try {
+        const skills = await Skill.find({}, null, {
+            sort: { name: 'asc' },
+        }).exec();
 
-        let skills = await Skill.find({}, null, {sort: {name: 'asc'}}).exec();
-    
         return skills;
-    } catch(err) {
+    } catch (err) {
         return null;
     }
 }
@@ -35,7 +32,9 @@ async function getAll() {
 async function remove(property) {
     try {
         const id = property?.id;
-        const filter = id ? {_id: mongoose.Types.ObjectId(id)} : {...property};
+        const filter = id
+            ? { _id: mongoose.Types.ObjectId(id) }
+            : { ...property };
         const deleted = await Skill.findOneAndDelete(filter).exec();
         return deleted;
     } catch (err) {
@@ -43,21 +42,26 @@ async function remove(property) {
     }
 }
 
-
-async function update({id, name, description, icon}) {
-    
+async function update({
+ id, name, description, icon
+}) {
     try {
-
-        const updated = await Skill.findByIdAndUpdate(id, {name, description, icon}, {omitUndefined: true, new: true}).exec();
+        const updated = await Skill.findByIdAndUpdate(
+            id,
+            { name, description, icon },
+            { omitUndefined: true, new: true },
+        ).exec();
         return updated;
-    } catch(err) {
+    } catch (err) {
         return null;
     }
 }
 
-module.exports = SkillManager = {
+const SkillManager = {
     create,
     remove,
     update,
-    getAll
-}
+    getAll,
+};
+
+module.exports = SkillManager;
