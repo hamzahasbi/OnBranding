@@ -1,20 +1,32 @@
-const mongoose = require('mongoose');
-const { Profile } = require('../models/Profile');
-const Normalizer = require('../helpers/normalizer');
+const mongoose = require("mongoose");
+const { Profile } = require("../models/Profile");
+const Normalizer = require("../helpers/normalizer");
 
 const ReferenceEnhancer = new Normalizer(true);
 const FieldEnhancer = new Normalizer(false);
 
 async function create({
-    user, company, websites, location, status,
-    skills, bio, interest, projects, posts, profiltags, resume,
-    education
+    user,
+    company,
+    websites,
+    location,
+    status,
+    skills,
+    bio,
+    interest,
+    projects,
+    posts,
+    profiltags,
+    resume,
+    education,
 }) {
     try {
         const normalizedTags = ReferenceEnhancer.normalize(skills);
         const uid = mongoose.Types.ObjectId(user?.id);
         const profile = new Profile({
-            status, bio, interest
+            status,
+            bio,
+            interest,
         });
 
         profile.user = uid;
@@ -47,9 +59,20 @@ async function create({
 }
 
 async function update({
-    user, id, company, websites, location, status,
-    skills, bio, interest, projects, posts, profiltags, resume,
-    education
+    user,
+    id,
+    company,
+    websites,
+    location,
+    status,
+    skills,
+    bio,
+    interest,
+    projects,
+    posts,
+    profiltags,
+    resume,
+    education,
 }) {
     try {
         const uid = mongoose.Types.ObjectId(user?.id);
@@ -76,29 +99,63 @@ async function update({
         const updated = await Profile.findOneAndUpdate(
             { user: uid, _id: id },
             target,
-            { omitUndefined: true, new: true }
+            { omitUndefined: true, new: true },
         ).exec();
         return updated;
     } catch (err) {
-      console.error(err);
-      return null;
+        console.error(err);
+        return null;
     }
-  }
+}
+
+async function get(user, sort = { name: "asc" }, limit = 4, offset = 0) {
+    try {
+        let profile = null;
+        let count = null;
+        const Limit = parseInt(limit, 10);
+        const Offset = parseInt(offset, 10);
+        const filter = { user: mongoose.Types.ObjectId(user.id) };
+
+        // public API.
+        const options = {
+            sort,
+            limit: Limit,
+            skip: Offset,
+        };
+        const query = Profile.find(filter, null, options);
+        profile = await query
+            .populate("user", "name email avatar")
+            .populate("skills", "name icon intro")
+            .populate("posts", "name link thumbnail")
+            .populate("projects", "name link thumbnail")
+            .exec();
+
+        count = await query.countDocuments().exec();
+
+        return { ressource: profile, count };
+    } catch (err) {
+        console.error(err);
+        return null;
+    }
+}
 
 async function remove(property) {
     try {
         const id = property?.id;
-        const filter = id ? { _id: mongoose.Types.ObjectId(id) } : { ...property };
+        const filter = id
+            ? { _id: mongoose.Types.ObjectId(id) }
+            : { ...property };
         const deleted = await Profile.findOneAndDelete(filter).exec();
         return deleted;
-      } catch (err) {
+    } catch (err) {
         return null;
-      }
+    }
 }
 const ProfileManager = {
     create,
     update,
-    remove
+    remove,
+    get,
 };
 
 module.exports = ProfileManager;

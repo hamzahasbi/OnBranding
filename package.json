@@ -11,7 +11,7 @@
     "front": "yarn workspace frontend start",
     "prettier": "prettier --ignore-path .gitignore \"**/*.+(js|jsx|ts|tsx|css)\"",
     "format": "yarn prettier --write",
-    "lint": "yarn workspaces run lint",
+    "lint": "yarn workspaces run eslint",
     "build": "yarn workspaces run build",
     "check-format": "yarn prettier --list-different",
     "validate": "npm-run-all --parallel check-format lint"
