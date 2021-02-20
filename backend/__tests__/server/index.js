@@ -17,6 +17,7 @@ app.use('/api/register', require('../../src/routes/api/users'));
 app.use('/api/skill', require('../../src/routes/api/skill'));
 app.use('/api/post', require('../../src/routes/api/post'));
 app.use('/api/project', require('../../src/routes/api/project'));
+app.use('/api/profile', require('../../src/routes/api/profile'));
 
 // Errors Routes.
 app.use((err, req, res, next) => res.status(500).json({ errors: err }));
