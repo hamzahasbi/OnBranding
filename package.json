@@ -8,6 +8,7 @@
   "scripts": {
     "api-dev": "yarn workspace backend develop",
     "api": "yarn workspace backend start",
+    "front-dev": "yarn workspace frontend dev",
     "front": "yarn workspace frontend start",
     "prettier": "prettier --ignore-path .gitignore \"**/*.+(js|jsx|ts|tsx|css)\"",
     "format": "yarn prettier --write",
