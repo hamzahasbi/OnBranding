@@ -105,4 +105,5 @@ dist
 */config/default.json
 secret.json
 mongodb/
-*/*.conf
+*.conf
+.DS_Store
