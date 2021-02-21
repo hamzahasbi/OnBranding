@@ -4,11 +4,15 @@ branches:
 notifications:
     email: false
 
+dist: bionic
+os: linux
+language: node_js
+
 test: &test
-    stage: Test
     dist: bionic
     os: linux
     language: node_js
+    stage: Test
     node_js:
         - node
     cache:

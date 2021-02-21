@@ -8,10 +8,11 @@
   "scripts": {
     "api-dev": "yarn workspace backend develop",
     "api": "yarn workspace backend start",
+    "front-dev": "yarn workspace frontend dev",
     "front": "yarn workspace frontend start",
     "prettier": "prettier --ignore-path .gitignore \"**/*.+(js|jsx|ts|tsx|css)\"",
     "format": "yarn prettier --write",
-    "lint": "yarn workspaces run eslint",
+    "lint": "yarn workspaces run eslint --ext js,jsx,ts,tsx",
     "build": "yarn workspaces run build",
     "check-format": "yarn prettier --check",
     "validate": "npm-run-all --parallel check-format lint"
@@ -45,7 +46,7 @@
     }
   },
   "lint-staged": {
-    "**/*.+(js|jsx|ts|tsx|css)": [
+    "**/*.+(js|jsx|ts|tsx)": [
       "eslint",
       "pretty-quick — staged"
     ]
