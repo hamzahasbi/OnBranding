@@ -5,7 +5,7 @@ const parallel = require('mocha.parallel');
 const app = require('../server/index');
 const { UserLogin, UserRegister } = require('../__mocks__/UserMock');
 
-const db = process.env.DATABASE_URL || config.get('mongoTestURI');
+const db = process.env.DATABASE_URL || config.get('mongoURIDocker');
 const { connectDB, closeDB } = require('../../config/database');
 const { create, remove } = require('../../src/services/UserManager');
 

@@ -10,7 +10,7 @@ const {
 } = require('../__mocks__/SkillMock');
 const { UserLogin, UserRegister } = require('../__mocks__/UserMock');
 
-const db = process.env.DATABASE_URL || config.get('mongoTestURI');
+const db = process.env.DATABASE_URL || config.get('mongoURIDocker');
 const { connectDB, closeDB } = require('../../config/database');
 const UserManager = require('../../src/services/UserManager');
 const SkillManager = require('../../src/services/SkillManager');
