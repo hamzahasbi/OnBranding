@@ -107,3 +107,5 @@ secret.json
 mongodb/
 *.conf
 .DS_Store
+data/
+dhparam
