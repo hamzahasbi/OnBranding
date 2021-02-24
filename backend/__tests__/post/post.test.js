@@ -6,7 +6,7 @@ const { newSkill } = require('../__mocks__/SkillMock');
 const { validPost, invalidPost, qs } = require('../__mocks__/PostMock');
 const { UserLogin, UserRegister } = require('../__mocks__/UserMock');
 
-const db = process.env.DATABASE_URL || config.get('mongoTestURI');
+const db = process.env.DATABASE_URL || config.get('mongoURIDocker');
 const { connectDB, closeDB } = require('../../config/database');
 const UserManager = require('../../src/services/UserManager');
 const SkillManager = require('../../src/services/SkillManager');

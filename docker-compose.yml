@@ -25,6 +25,7 @@ services:
 
   nginx:
     image: nginx:latest
+    restart: on-failure
     links:
      - node
      - mongodb
@@ -36,8 +37,9 @@ services:
     volumes:
       - .:/project/onbranding/
       - ./branding.conf:/etc/nginx/conf.d/site.conf
-      # - certbot-etc:/etc/letsencrypt
-      # - certbot-var:/var/lib/letsencrypt
+      # - ./data/certbot/etc:/etc/letsencrypt
+      # - ./data/certbot/var:/var/lib/letsencrypt
+      # - ./dhparam:/etc/ssl/certs
     ports:
       - "80:80"
       - "443:443"
@@ -52,15 +54,16 @@ services:
   #   image: certbot/certbot
   #   container_name: certbot
   #   volumes:
-  #     - certbot-etc:/etc/letsencrypt
-  #     - certbot-var:/var/lib/letsencrypt
-  #     - web-root:/var/www/html
+  #     - ./data/certbot/etc:/etc/letsencrypt
+  #     - ./data/certbot/var:/var/lib/letsencrypt
+  #     - .:/project/onbranding/
   #   depends_on:
-  #     - node
-  #   command: certonly --webroot --webroot-path=/var/www/html --email hamza.hasbi@gmail.com --agree-tos --no-eff-email --staging -d onbranding.tech  -d www.onbranding.tech
+  #     - nginx
+  #   command: certonly --webroot --webroot-path=/project/onbranding/ --email hamza.hasbi@gmail.com --agree-tos --no-eff-email --staging -d onbranding.dev  -d www.onbranding.dev
   
   mongodb:
     image: mongo:latest
+    restart: on-failure
     env_file:
       - ./.env
     environment:
@@ -81,6 +84,7 @@ services:
 
   redis:
     image: redis:latest
+    restart: on-failure
     ports:
       - "6379:6379"
     networks:
@@ -99,7 +103,7 @@ services:
       - mongodb
     links:
       - mongodb
-    restart: always
+    restart: on-failure
     networks:
       - prod
     env_file:

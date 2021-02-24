@@ -4,7 +4,7 @@ const config = require('config');
 const app = require('../server/index');
 const { UserRegister } = require('../__mocks__/UserMock');
 
-const db = process.env.DATABASE_URL || config.get('mongoTestURI');
+const db = process.env.DATABASE_URL || config.get('mongoURIDocker');
 const { connectDB, closeDB } = require('../../config/database');
 const { remove } = require('../../src/services/UserManager');
 
