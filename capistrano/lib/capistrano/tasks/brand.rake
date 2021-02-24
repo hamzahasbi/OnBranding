@@ -12,11 +12,11 @@ namespace :branding do
         end
     end
   
-    desc 'Stopping old Containers && removing theme'
+    desc 'Stopping old Containers'
     task :clean_containers do
         on roles(:app) do
             within release_path.join(fetch(:app_path)) do
-                invoke "docker:compose:down"
+                invoke "docker:compose:stop"
             end
         end
     end
