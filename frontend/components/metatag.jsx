@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import sanitizeHtml from 'sanitize-html';
+import DOMPurify from 'dompurify';
 // type should be website for the app & Profile for the portfolio.
 /*
     Those must be exported from the API.
@@ -46,7 +46,7 @@ export const Schema = ({ description, title }) => {
         <Head>
             <script
                 type="application/ld+json"
-                dangerouslySetInnerHTML={{ __html: sanitizeHtml(ldObject) }}
+                dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(ldObject) }}
             />
         </Head>
     );
