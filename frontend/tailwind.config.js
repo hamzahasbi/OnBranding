@@ -10,6 +10,7 @@ module.exports = {
       whitelist: [],
     },
   },
+  darkMode: 'class',
   theme: {
     extend: {},
   },
