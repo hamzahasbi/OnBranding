@@ -2,21 +2,21 @@ import {
     Box,
     Input,
     Stack, 
-    InputRightElement, 
     InputGroup,
+    FormControl,
     InputLeftElement,
+    FormErrorMessage,
     Button,
  } from "@chakra-ui/react"
-import {CheckIcon, PhoneIcon} from '@chakra-ui/icons';
+import {QuestionIcon, EmailIcon} from '@chakra-ui/icons';
 import {useForm} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {validationLogin} from '../../config/validators';
-import {useState} from 'react';
 
 
 
 const LoginForm = () => {
-    const { handleSubmit, register } = useForm({
+    const { handleSubmit, register, errors, formState } = useForm({
         mode: 'onChange',
         reValidateMode: 'onChange',
         defaultValues: {},
@@ -24,45 +24,61 @@ const LoginForm = () => {
         context: undefined,
         criteriaMode: "firstError",
         shouldFocusError: true,
+        // shouldUnregister: true,
+
     });
     
-    const {loading, setLoading} = useState(false);
+    const onSubmit = (data) => console.log(data, "Valide");
+    const onError = (errors) => console.log(errors, "error");
     return (
-        <Box maxW="sm"  overflow="hidden">
+        <Box maxW="sm" overflow="hidden" p={4} >
             <Stack spacing={4}>
-                <form onSubmit={handleSubmit(d => {
-                    setLoading(true);
-                    console.log(d);
-                })}>
-                    <InputGroup>
-                        <InputLeftElement
-                        pointerEvents="none"
-                        children={<PhoneIcon color="gray.300" />}
-                        />
-                        <Input ref={register} name={"username"} type="email" placeholder="Phone number" />
-                    </InputGroup>
+                <form onSubmit={handleSubmit(onSubmit, onError)}>
+                    <FormControl isInvalid={errors.username} mt="4">
+                        <InputGroup>
+                          <InputLeftElement
+                            pointerEvents="none"
+                            children={<EmailIcon color="gray.300" />}
+                          />
+                           <Input ref={register} name="username" type="email" placeholder="Email" />
 
-                    <InputGroup>
+                        </InputGroup>
+                        <FormErrorMessage>
+                            {errors.username && errors.username.message}
+                        </FormErrorMessage>
+                    </FormControl>
+
+                    <FormControl isInvalid={errors.password} mt="2">
+                        <InputGroup>
+                          <InputLeftElement
+                          pointerEvents="none"
+                          children={<QuestionIcon color="gray.300" />}
+                          />
+                          <Input ref={register} name="password" type="password" placeholder="Password" />
+                        </InputGroup>
+                        
+                        <FormErrorMessage>
+                            {errors.password && errors.password.message}
+                        </FormErrorMessage>
+                    </FormControl>
+                    {/* <InputGroup>
                         <InputLeftElement
                         pointerEvents="none"
                         color="gray.300"
                         fontSize="1.2em"
-                        children="$"
+                        children="O"
                         />
                         <Input placeholder="Enter amount" />
                         <InputRightElement children={<CheckIcon color="green.500" />} />
-                    </InputGroup>
-                    <Button
-                        isLoading={loading}
-                        loadingText="Submitting"
-                        colorScheme="teal"
-                        variant="outline">
-                        Submit
+                    </InputGroup> */}
+                    <Button mt={4} colorScheme="teal" isLoading={formState.isSubmitting} type="submit">
+                      Submit
                     </Button>
                 </form>
-            </Stack>
-        </Box>
+             </Stack>
+         </Box>
     );
 };
+
 
 export default LoginForm;
