@@ -7,9 +7,6 @@
     "build": "next build",
     "start": "next start"
   },
-  "resolutions": {
-    "framer-motion": "3.6.7"
-  },
   "dependencies": {
     "@chakra-ui/icons": "^1.0.5",
     "@chakra-ui/react": "^1.3.3",
@@ -19,7 +16,7 @@
     "autoprefixer": "^10.2.4",
     "axios": "^0.21.1",
     "dompurify": "^2.2.6",
-    "framer-motion": "^3.6.2",
+    "framer-motion": "3.6.7",
     "next": "10.0.7",
     "postcss": "^8.2.6",
     "pullstate": "^1.20.6",
@@ -34,5 +31,8 @@
     "@babel/core": "^7.12.17",
     "@babel/eslint-parser": "^7.12.17",
     "eslint-plugin-react": "^7.22.0"
+  },
+  "resolutions": {
+    "framer-motion": "3.6.7"
   }
 }
