@@ -1,7 +1,17 @@
-import '../styles/globals.css'
+import '../styles/globals.css';
+import { ChakraProvider, CSSReset } from '@chakra-ui/react';
+import { theme, Fonts } from '../config/theme';
 
-function MyApp({ Component, pageProps }) {
-  return <Component {...pageProps} />
+
+function GlobalApp({ Component, pageProps }) {
+    return (
+        <ChakraProvider theme={theme}>
+            <CSSReset/>
+            <Fonts />
+
+            <Component {...pageProps} />
+        </ChakraProvider>
+    );
 }
 
-export default MyApp;
+export default GlobalApp;
