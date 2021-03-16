@@ -13,11 +13,14 @@ import {
   MenuDivider,
   useDisclosure,
   useColorModeValue,
+  useColorMode,
   Stack,
+  Icon,
 } from '@chakra-ui/react';
-import { HamburgerIcon, CloseIcon, AddIcon } from '@chakra-ui/icons';
+import { HamburgerIcon, CloseIcon, MoonIcon, SunIcon} from '@chakra-ui/icons';
+import { FcLike } from "react-icons/fc";
 
-const Links = ['Dashboard', 'Projects', 'Team'];
+const Links = ['Home', 'Dashboard', 'About', 'Login'];
 
 const NavLink = ({ children }) => (
   <Link
@@ -35,7 +38,8 @@ const NavLink = ({ children }) => (
 
 export default function withAction() {
   const { isOpen, onOpen, onClose } = useDisclosure();
-
+  const { colorMode, toggleColorMode } = useColorMode();
+  // const connected = false;
   return (
     <>
       <Box bg={useColorModeValue('gray.100', 'gray.900')} px={4}>
@@ -64,9 +68,23 @@ export default function withAction() {
               colorScheme={'teal'}
               size={'sm'}
               mr={4}
-              leftIcon={<AddIcon />}>
-              Action
+              leftIcon={<Icon as={FcLike} />}>
+              Sponsor
             </Button>
+         
+            <IconButton
+              size={'md'}
+              icon={colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
+              // color="yellow.500"
+              aria-label={'Dark mode'}
+              mr={4}
+              color={'gray.500'}
+              _hover={{
+                  bgGradient: 'linear(to-r, red.400,pink.400)',
+                  boxShadow: 'xl',
+              }}
+              onClick={toggleColorMode}
+            />
             <Menu>
               <MenuButton
                 as={Button}
@@ -100,8 +118,6 @@ export default function withAction() {
           </Box>
         ) : null}
       </Box>
-
-      <Box p={4}>Main Content Here</Box>
     </>
   );
 }
