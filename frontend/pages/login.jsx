@@ -18,7 +18,6 @@ import {
     Avatar,
     AvatarGroup,
     useBreakpointValue,
-    useColorMode,
     Icon,
 } from '@chakra-ui/react';
 
@@ -34,13 +33,8 @@ export default function Login() {
 }
 
 function SplitScreen() {
-    const { colorMode, toggleColorMode } = useColorMode();
-
     return (
         <Stack minH={'100vh'} direction={{ base: 'column', md: 'row' }}>
-            <Button onClick={toggleColorMode}>
-                Toggle {colorMode === 'light' ? 'light' : 'dark'}
-            </Button>
             <Flex p={8} flex={1} align={'center'} justify={'center'}>
                 <Stack spacing={4} w={'full'} maxW={'md'}>
                     <Heading fontSize={'2xl'}>Sign in to your account</Heading>
