@@ -16,7 +16,7 @@
     "autoprefixer": "^10.2.4",
     "axios": "^0.21.1",
     "dompurify": "^2.2.6",
-    "framer-motion": "3.6.7",
+    "framer-motion": "^3.6.7",
     "next": "10.0.7",
     "postcss": "^8.2.6",
     "pullstate": "^1.20.6",
