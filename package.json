@@ -50,5 +50,10 @@
       "eslint",
       "pretty-quick — staged"
     ]
+  },
+  "dependencies": {
+    "autoprefixer": "^10.2.5",
+    "postcss": "^8.2.8",
+    "tailwindcss": "^2.0.4"
   }
 }

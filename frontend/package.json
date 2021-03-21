@@ -5,7 +5,9 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "tailwind": "tailwindcss build public/assets/css/tailwind.css -o public/assets/css/tailwind.output.css",
+    "build:css": "env NODE_ENV=production postcss public/assets/css/tailwind.css -o public/assets/css/tailwind.output.css"
   },
   "dependencies": {
     "@chakra-ui/icons": "^1.0.5",
@@ -13,20 +15,23 @@
     "@emotion/react": "^11.1.5",
     "@emotion/styled": "^11.1.5",
     "@hookform/resolvers": "2.0.0-beta.3",
-    "autoprefixer": "^10.2.4",
     "axios": "^0.21.1",
     "dompurify": "^2.2.6",
     "framer-motion": "^3.6.7",
     "next": "10.0.7",
-    "postcss": "^8.2.6",
     "pullstate": "^1.20.6",
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-hook-form": "^6.15.4",
     "react-icons": "^4.2.0",
     "reselect": "^4.0.0",
-    "tailwindcss": "^2.0.3",
-    "yup": "^0.32.9"
+    "yup": "^0.32.9",
+    "@tailwindcss/custom-forms": "^0.2.1",
+    "color": "^3.1.2",
+    "commitizen": "^4.1.2",
+    "cssnano": "^4.1.10",
+    "postcss-cli": "^7.1.1",
+    "tailwindcss-multi-theme": "^1.0.3"
   },
   "devDependencies": {
     "@babel/core": "^7.12.17",
