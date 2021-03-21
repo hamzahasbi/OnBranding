@@ -113,14 +113,7 @@ export default function RegistartionForm() {
                         name="avatar"
                         control={control}
                     />
-                    <Button
-                        fontFamily={'heading'}
-                        bg={'gray.200'}
-                        color={'gray.800'}
-                        name="avatar"
-                    >
-                        Avatar
-                    </Button>
+                    
                     <Button
                         fontFamily={'heading'}
                         mt={8}
