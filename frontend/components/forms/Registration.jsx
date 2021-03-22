@@ -101,14 +101,14 @@ export default function RegistartionForm() {
                         </FormErrorMessage>
                     </FormControl>
                     <FileUpload
-                        placeholder="Avatr"
+                        placeholder="Upload a file"
                         bg={'gray.100'}
                         border={0}
                         color={'gray.500'}
                         _placeholder={{
                             color: 'gray.500',
                         }}
-                        type="password"
+                        children={"Avatar photo"}
                         acceptedFileTypes="image/png, image/jpeg"
                         name="avatar"
                         control={control}

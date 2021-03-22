@@ -1,7 +1,21 @@
-import { Input, FormControl, FormLabel, InputGroup, InputLeftElement, FormErrorMessage, Icon } from "@chakra-ui/react";
-import { FiFile } from "react-icons/fi";
+import { FormControl, FormLabel, FormErrorMessage, IconButton } from "@chakra-ui/react";
+import { TiUploadOutline } from "react-icons/ti";
 import { useController } from "react-hook-form";
-import { useRef } from "react";
+import { useRef, useState } from "react";
+import { createIcon } from "@chakra-ui/icons"
+
+
+export const FileIcon = createIcon({
+  displayName: "FileIcon",
+  viewBox: "0 0 48 48",
+  // path can also be an array of elements, if you have multiple paths, lines, shapes, etc.
+  path: (
+    <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" 
+    stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+
+  ),
+  
+})
 
 const FileUpload = ({ name, placeholder, acceptedFileTypes, control, children, isRequired=false }) => {
   const inputRef = useRef();
@@ -14,36 +28,35 @@ const FileUpload = ({ name, placeholder, acceptedFileTypes, control, children, i
     rules: { required: isRequired },
   });
 
+  const [file, setFile] = useState("");
+  const handleFile = () => {
+    inputRef.current.click();
+    setFile(value);
+    console.log(file);
+  };
   return (
     <FormControl isInvalid={invalid} isRequired>
-      <FormLabel htmlFor="writeUpFile">{children}</FormLabel>
-      <InputGroup>
-        <InputLeftElement
-          pointerEvents="none"
-          children={<Icon as={FiFile} />}
-        />
-        
-        <input type='file' accept={acceptedFileTypes} name={name} ref={inputRef} {...inputProps} inputRef={ref} style={{ display: 'none' }}></input>
-        <div class="py-20 h-screen bg-white px-2">
-            <div class="max-w-md mx-auto rounded-lg overflow-hidden md:max-w-xl">
-                <div class="md:flex">
-                    <div class="w-full p-3">
-                        <div class="relative border-dotted h-48 rounded-lg border-dashed border-2 border-blue-700 bg-gray-100 flex justify-center items-center">
-                            <div class="absolute">
-                                <div class="flex flex-col items-center"> <i class="fa fa-folder-open fa-4x text-blue-700"></i> <span class="block text-gray-400 font-normal">Attach you files here</span> </div>
-                            </div>
-                            <Input
-                              placeholder={placeholder || "Your file ..."}
-                              onClick={() => inputRef.current.click()}
-                              value={value}
-                            />
-                        </div>
-                    </div>
-                </div>
+      <FormLabel htmlFor="writeUpFile" className="block text-sm font-medium text-gray-700">{children}</FormLabel>
+      <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
+        <input type='file' className="sr-only" accept={acceptedFileTypes} name={name} ref={inputRef}  inputRef={ref} {...inputProps} style={{ display: 'none' }}></input>
+          <div className="space-y-1 text-center">
+            {/* <TiUploadOutline className="mx-auto h-12 w-12 text-gray-400" /> */}
+            <div className="flex text-sm text-gray-600">
+                <IconButton
+                  placeholder={placeholder || "Your file ..."}
+                  onClick={() => handleFile()}
+                  icon={<TiUploadOutline className="mx-auto h-12 w-12 text-gray-400" />}
+                  ml={3}
+                  className="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500"
+                />
+                {console.log(value)}
+              {/* <p className="pl-1">or drag and drop</p> */}
             </div>
+            <p className="text-xs text-gray-500">
+              PNG, JPG, GIF up to 10MB
+            </p>
+          </div>
         </div>
-
-      </InputGroup>
       <FormErrorMessage>
         {invalid}
       </FormErrorMessage>
