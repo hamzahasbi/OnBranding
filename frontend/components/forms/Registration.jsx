@@ -23,7 +23,11 @@ export default function RegistartionForm() {
         // shouldUnregister: true,
     });
 
-    const onSubmit = (data) => console.log(data, 'Valide');
+    const onSubmit = (data) => {
+        const formData = new FormData(); 
+        formData.append('avatar', data.avatar);
+        console.log(data, 'valid');
+    }
     const onError = (errors) => console.log(errors, 'error');
 
     return (
@@ -109,7 +113,7 @@ export default function RegistartionForm() {
                             color: 'gray.500',
                         }}
                         children={"Avatar photo"}
-                        acceptedFileTypes="image/png, image/jpeg"
+                        acceptedFileTypes="image/*"
                         name="avatar"
                         control={control}
                     />

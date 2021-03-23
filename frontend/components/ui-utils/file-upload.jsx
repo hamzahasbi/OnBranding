@@ -1,7 +1,8 @@
-import { FormControl, FormLabel, FormErrorMessage, IconButton } from "@chakra-ui/react";
+import { FormControl, Text, FormLabel, FormErrorMessage, IconButton } from "@chakra-ui/react";
 import { TiUploadOutline } from "react-icons/ti";
+import { MdCloudDone } from "react-icons/md";
 import { useController } from "react-hook-form";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { createIcon } from "@chakra-ui/icons"
 
 
@@ -17,44 +18,45 @@ export const FileIcon = createIcon({
   
 })
 
-const FileUpload = ({ name, placeholder, acceptedFileTypes, control, children, isRequired=false }) => {
+const FileUpload = ({ name, placeholder, acceptedFileTypes, control, children, isRequired = false }) => {
   const inputRef = useRef();
   const {
-    field: { ref, value, ...inputProps },
+    field: {value, ...inputProps },
     meta: { invalid },
   } = useController({
     name,
+    defaultValue: "",
     control,
     rules: { required: isRequired },
   });
 
-  const [file, setFile] = useState("");
-  const handleFile = () => {
-    inputRef.current.click();
-    setFile(value);
-    console.log(file);
-  };
   return (
     <FormControl isInvalid={invalid} isRequired>
       <FormLabel htmlFor="writeUpFile" className="block text-sm font-medium text-gray-700">{children}</FormLabel>
       <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
-        <input type='file' className="sr-only" accept={acceptedFileTypes} name={name} ref={inputRef}  inputRef={ref} {...inputProps} style={{ display: 'none' }}></input>
+        <input type='file' 
+          accept={acceptedFileTypes}
+          name={name}
+          ref={inputRef} 
+          {...inputProps} 
+          style={{ display: 'none' }}/>
           <div className="space-y-1 text-center">
-            {/* <TiUploadOutline className="mx-auto h-12 w-12 text-gray-400" /> */}
             <div className="flex text-sm text-gray-600">
                 <IconButton
                   placeholder={placeholder || "Your file ..."}
-                  onClick={() => handleFile()}
-                  icon={<TiUploadOutline className="mx-auto h-12 w-12 text-gray-400" />}
-                  ml={3}
+                  onClick={() => inputRef.current.click()}
+                  icon={value.length > 0 ?
+                    <MdCloudDone className="mx-auto h-12 w-12 text-gray-400"/> :
+                    <TiUploadOutline className="mx-auto h-12 w-12 text-gray-400"/>
+                  }
+                  ml={10}
+                  mb={3}
                   className="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500"
                 />
-                {console.log(value)}
-              {/* <p className="pl-1">or drag and drop</p> */}
             </div>
-            <p className="text-xs text-gray-500">
-              PNG, JPG, GIF up to 10MB
-            </p>
+            <Text className="text-xs text-gray-500">
+              {value.length > 0 ? value : "PNG, JPG, GIF up to 10MB"}
+            </Text>
           </div>
         </div>
       <FormErrorMessage>
