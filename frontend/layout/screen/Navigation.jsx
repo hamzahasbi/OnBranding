@@ -10,7 +10,6 @@ import {
     MenuButton,
     MenuList,
     MenuItem,
-    MenuDivider,
     useDisclosure,
     useColorModeValue,
     useColorMode,
@@ -100,7 +99,7 @@ export default function withAction() {
                             color={'yellow.500'}
                             onClick={toggleColorMode}
                         />
-                        <Menu>
+                        <Menu isLazy={true}>
                             <MenuButton
                                 as={Button}
                                 rounded={'full'}
@@ -116,13 +115,14 @@ export default function withAction() {
                             </MenuButton>
                             <MenuList>
                                 {OauthMenu.map((item) => (
-                                    <MenuItem key={item.id}>
+                                    <MenuItem as={"a"} key={item.id} href={"#"}>
                                         {item.label}
                                     </MenuItem>
                                 ))}
-                                <MenuDivider />
                             </MenuList>
+                            
                         </Menu>
+                    
                     </Flex>
                 </Flex>
 

@@ -1,4 +1,10 @@
-import { FormControl, Text, FormLabel, FormErrorMessage, IconButton } from "@chakra-ui/react";
+import { 
+  FormControl,
+  Text,
+  FormLabel, 
+  FormErrorMessage, 
+  IconButton 
+} from "@chakra-ui/react";
 import { TiUploadOutline } from "react-icons/ti";
 import { MdCloudDone } from "react-icons/md";
 import { useController } from "react-hook-form";
@@ -20,8 +26,9 @@ export const FileIcon = createIcon({
 
 const FileUpload = ({ name, placeholder, acceptedFileTypes, control, children, isRequired = false }) => {
   const inputRef = useRef();
+
   const {
-    field: {value, ...inputProps },
+    field: {ref, value, ...inputProps },
     meta: { invalid },
   } = useController({
     name,
@@ -30,8 +37,9 @@ const FileUpload = ({ name, placeholder, acceptedFileTypes, control, children, i
     rules: { required: isRequired },
   });
 
+
   return (
-    <FormControl isInvalid={invalid} isRequired>
+    <FormControl isInvalid={invalid} isRequired={isRequired}>
       <FormLabel htmlFor="writeUpFile" className="block text-sm font-medium text-gray-700">{children}</FormLabel>
       <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
         <input type='file' 
@@ -39,6 +47,7 @@ const FileUpload = ({ name, placeholder, acceptedFileTypes, control, children, i
           name={name}
           ref={inputRef} 
           {...inputProps} 
+          inputref={ref}
           style={{ display: 'none' }}/>
           <div className="space-y-1 text-center">
             <div className="flex text-sm text-gray-600">
