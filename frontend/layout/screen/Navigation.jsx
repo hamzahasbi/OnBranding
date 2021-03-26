@@ -31,7 +31,11 @@ const NavLink = ({ link, label }) => {
                 px={2}
                 py={1}
                 rounded={'md'}
-                color={router.pathname === link ? 'purple.500' : 'telegram'}
+                color={
+                    router.pathname === link
+                        ? useColorModeValue('purple.500', 'purple.300')
+                        : 'telegram'
+                }
                 _hover={{
                     textDecoration: 'none',
                     bg: useColorModeValue('gray.200', 'gray.700'),
@@ -115,14 +119,12 @@ export default function withAction() {
                             </MenuButton>
                             <MenuList>
                                 {OauthMenu.map((item) => (
-                                    <MenuItem as={"a"} key={item.id} href={"#"}>
+                                    <MenuItem as={'a'} key={item.id} href={'#'}>
                                         {item.label}
                                     </MenuItem>
                                 ))}
                             </MenuList>
-                            
                         </Menu>
-                    
                     </Flex>
                 </Flex>
 
