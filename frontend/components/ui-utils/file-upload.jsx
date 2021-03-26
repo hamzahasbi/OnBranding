@@ -6,7 +6,7 @@ import {
   IconButton 
 } from "@chakra-ui/react";
 import { TiUploadOutline } from "react-icons/ti";
-import { MdCloudDone } from "react-icons/md";
+import { CgRemove } from "react-icons/cg";
 import { useController } from "react-hook-form";
 import { useRef } from "react";
 import { createIcon } from "@chakra-ui/icons"
@@ -24,7 +24,7 @@ export const FileIcon = createIcon({
   
 })
 
-const FileUpload = ({ name, placeholder, acceptedFileTypes, control, children, isRequired = false }) => {
+const FileUpload = ({ name, placeholder, acceptedFileTypes, reset, oldValues, control, children, isRequired = false }) => {
   const inputRef = useRef();
 
   const {
@@ -38,6 +38,12 @@ const FileUpload = ({ name, placeholder, acceptedFileTypes, control, children, i
   });
 
 
+  const handleUpload = () => {
+    if (value.length > 0) {
+      reset({...oldValues, avatar: '' });      
+    }
+    else inputRef.current.click();
+  }
   return (
     <FormControl isInvalid={invalid} isRequired={isRequired}>
       <FormLabel htmlFor="writeUpFile" className="block text-sm font-medium text-gray-700">{children}</FormLabel>
@@ -50,19 +56,17 @@ const FileUpload = ({ name, placeholder, acceptedFileTypes, control, children, i
           inputref={ref}
           style={{ display: 'none' }}/>
           <div className="space-y-1 text-center">
-            <div className="flex text-sm text-gray-600">
-                <IconButton
-                  placeholder={placeholder || "Your file ..."}
-                  onClick={() => inputRef.current.click()}
-                  icon={value.length > 0 ?
-                    <MdCloudDone className="mx-auto h-12 w-12 text-gray-400"/> :
-                    <TiUploadOutline className="mx-auto h-12 w-12 text-gray-400"/>
-                  }
-                  ml={10}
-                  mb={3}
-                  className="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500"
-                />
-            </div>
+
+            <IconButton
+              placeholder={placeholder || "Your file ..."}
+              onClick={handleUpload}
+              icon={value.length > 0 ?
+                <CgRemove className="mx-auto h-12 w-12 text-red-400"/> :
+                <TiUploadOutline className="mx-auto h-12 w-12 text-gray-400"/>
+              }
+              mb={3}
+              className="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500"
+            />
             <Text className="text-xs text-gray-500">
               {value.length > 0 ? value : "PNG, JPG, GIF up to 10MB"}
             </Text>

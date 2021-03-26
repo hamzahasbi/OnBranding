@@ -12,7 +12,7 @@ import {
 import FileUpload from '../ui-utils/file-upload';
 
 export default function RegistartionForm() {
-    const { handleSubmit, register, errors, formState, control } = useForm({
+    const { handleSubmit, register, reset, watch, errors, formState, control } = useForm({
         mode: 'onChange',
         reValidateMode: 'onChange',
         defaultValues: {},
@@ -27,6 +27,7 @@ export default function RegistartionForm() {
         const formData = new FormData(); 
         formData.append('avatar', data.avatar);
         console.log(data, 'valid');
+        reset();
     }
     const onError = (errors) => console.log(errors, 'error');
 
@@ -115,6 +116,8 @@ export default function RegistartionForm() {
                         children={"Avatar photo"}
                         acceptedFileTypes="image/*"
                         name="avatar"
+                        reset={reset}
+                        oldValues={watch()}
                         control={control}
                     />
                     
@@ -122,10 +125,10 @@ export default function RegistartionForm() {
                         fontFamily={'heading'}
                         mt={8}
                         w={'full'}
-                        bgGradient="linear(to-r, red.400,pink.400)"
+                        bgGradient="linear(to-r, purple.400,pink.400)"
                         color={'white'}
                         _hover={{
-                            bgGradient: 'linear(to-r, red.400,pink.400)',
+                            bgGradient: 'linear(to-r, yellow.400,yellow.700)',
                             boxShadow: 'xl',
                         }}
                         type="submit"
