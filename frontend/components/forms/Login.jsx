@@ -1,6 +1,6 @@
-import { 
+import {
     Input,
-    Stack, 
+    Stack,
     InputGroup,
     FormControl,
     InputLeftElement,
@@ -8,29 +8,30 @@ import {
     Checkbox,
     Heading,
     Button,
- } from "@chakra-ui/react"
-import {QuestionIcon, EmailIcon} from '@chakra-ui/icons';
-import {useForm} from 'react-hook-form';
-import {yupResolver} from '@hookform/resolvers/yup';
-import {validationLogin} from '../../config/validators';
-import {OptimizedLink} from '../ui-utils/link';
-
+} from '@chakra-ui/react';
+import { QuestionIcon, EmailIcon } from '@chakra-ui/icons';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { validationLogin } from '../../config/validators';
+import { OptimizedLink } from '../ui-utils/link';
 
 const LoginForm = () => {
-    const { handleSubmit, register, errors, formState } = useForm({
+    const { handleSubmit, register, errors, formState, reset } = useForm({
         mode: 'onChange',
         reValidateMode: 'onChange',
         defaultValues: {},
         resolver: yupResolver(validationLogin),
         context: undefined,
-        criteriaMode: "firstError",
+        criteriaMode: 'firstError',
         shouldFocusError: true,
         // shouldUnregister: true,
-
     });
-    
-    const onSubmit = (data) => console.log(data, "Valide");
-    const onError = (errors) => console.log(errors, "error");
+
+    const onSubmit = (data) => {
+        console.log(data);
+        reset();
+    };
+    const onError = (errors) => console.log(errors, 'error');
     return (
         <Stack spacing={4} w={'full'} maxW={'md'}>
             <Heading fontSize={'2xl'}>Sign in to your account</Heading>
@@ -38,10 +39,15 @@ const LoginForm = () => {
                 <FormControl id="email" isInvalid={errors.username} my={5}>
                     <InputGroup>
                         <InputLeftElement
-                        pointerEvents="none"
-                        children={<EmailIcon color="gray.300" />}
+                            pointerEvents="none"
+                            children={<EmailIcon color="gray.300" />}
                         />
-                    <Input type="email" placeholder="Email" ref={register} name="username"/>
+                        <Input
+                            type="email"
+                            placeholder="Email"
+                            ref={register}
+                            name="username"
+                        />
                     </InputGroup>
                     <FormErrorMessage>
                         {errors.username && errors.username.message}
@@ -50,10 +56,15 @@ const LoginForm = () => {
                 <FormControl id="password" isInvalid={errors.password} my={3}>
                     <InputGroup>
                         <InputLeftElement
-                        pointerEvents="none"
-                        children={<QuestionIcon color="gray.300" />}
+                            pointerEvents="none"
+                            children={<QuestionIcon color="gray.300" />}
                         />
-                        <Input ref={register} name="password" type="password" placeholder="Password" />
+                        <Input
+                            ref={register}
+                            name="password"
+                            type="password"
+                            placeholder="Password"
+                        />
                     </InputGroup>
                     <FormErrorMessage>
                         {errors.password && errors.password.message}
@@ -66,9 +77,25 @@ const LoginForm = () => {
                         justify={'space-between'}
                     >
                         <Checkbox colorScheme={'purple'}>Remember me</Checkbox>
-                        <OptimizedLink color={'purple.400'} label="Forgot password?" link="#"/>
+                        <OptimizedLink
+                            color={'purple.300'}
+                            label="Forgot password?"
+                            link="#"
+                        />
                     </Stack>
-                    <Button colorScheme={'purple'} variant={'outline'} isLoading={formState.isSubmitting} type="submit">
+                    <Button
+                        fontFamily={'heading'}
+                        mt={8}
+                        w={'full'}
+                        bgGradient="linear(to-r, purple.300,purple.700)"
+                        color={'white'}
+                        _hover={{
+                            bgGradient: 'linear(to-r, purple.600,purple.800)',
+                            boxShadow: 'xl',
+                        }}
+                        type="submit"
+                        isLoading={formState.isLoading}
+                    >
                         Sign in
                     </Button>
                 </Stack>
@@ -76,6 +103,5 @@ const LoginForm = () => {
         </Stack>
     );
 };
-
 
 export default LoginForm;
