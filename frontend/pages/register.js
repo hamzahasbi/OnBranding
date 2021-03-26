@@ -152,7 +152,7 @@ export default function Register() {
                             Join our team
                             <Text
                                 as={'span'}
-                                bgGradient="linear(to-r, red.400,pink.400)"
+                                bgGradient="linear(to-r, purple.400,pink.400)"
                                 bgClip="text"
                             >
                                 !
@@ -172,7 +172,7 @@ export default function Register() {
             </Container>
             <Blur
                 position={'absolute'}
-                top={-10}
+                top={0}
                 left={-10}
                 style={{ filter: 'blur(70px)' }}
             />
