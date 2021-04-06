@@ -1,84 +1,107 @@
-import { 
-    Box,
+import {
     Input,
-    Stack, 
+    Stack,
     InputGroup,
     FormControl,
     InputLeftElement,
     FormErrorMessage,
+    Checkbox,
+    Heading,
     Button,
- } from "@chakra-ui/react"
-import {QuestionIcon, EmailIcon} from '@chakra-ui/icons';
-import {useForm} from 'react-hook-form';
-import {yupResolver} from '@hookform/resolvers/yup';
-import {validationLogin} from '../../config/validators';
-
-
+} from '@chakra-ui/react';
+import { QuestionIcon, EmailIcon } from '@chakra-ui/icons';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { validationLogin } from '../../config/validators';
+import { OptimizedLink } from '../ui-utils/link';
 
 const LoginForm = () => {
-    const { handleSubmit, register, errors, formState } = useForm({
+    const { handleSubmit, register, errors, formState, reset } = useForm({
         mode: 'onChange',
         reValidateMode: 'onChange',
         defaultValues: {},
         resolver: yupResolver(validationLogin),
         context: undefined,
-        criteriaMode: "firstError",
+        criteriaMode: 'firstError',
         shouldFocusError: true,
         // shouldUnregister: true,
-
     });
-    
-    const onSubmit = (data) => console.log(data, "Valide");
-    const onError = (errors) => console.log(errors, "error");
+
+    const onSubmit = (data) => {
+        console.log(data);
+        reset();
+    };
+    const onError = (errors) => console.log(errors, 'error');
     return (
-        <Box maxW="sm" overflow="hidden" p={4} >
-            <Stack spacing={4}>
-                <form onSubmit={handleSubmit(onSubmit, onError)}>
-                    <FormControl isInvalid={errors.username} mt="4">
-                        <InputGroup>
-                          <InputLeftElement
+        <Stack spacing={4} w={'full'} maxW={'md'}>
+            <Heading fontSize={'2xl'}>Sign in to your account</Heading>
+            <form onSubmit={handleSubmit(onSubmit, onError)}>
+                <FormControl id="email" isInvalid={errors.username} my={5}>
+                    <InputGroup>
+                        <InputLeftElement
                             pointerEvents="none"
                             children={<EmailIcon color="gray.300" />}
-                          />
-                           <Input ref={register} name="username" type="email" placeholder="Email" />
-
-                        </InputGroup>
-                        <FormErrorMessage>
-                            {errors.username && errors.username.message}
-                        </FormErrorMessage>
-                    </FormControl>
-
-                    <FormControl isInvalid={errors.password} mt="2">
-                        <InputGroup>
-                          <InputLeftElement
-                          pointerEvents="none"
-                          children={<QuestionIcon color="gray.300" />}
-                          />
-                          <Input ref={register} name="password" type="password" placeholder="Password" />
-                        </InputGroup>
-                        
-                        <FormErrorMessage>
-                            {errors.password && errors.password.message}
-                        </FormErrorMessage>
-                    </FormControl>
-                    {/* <InputGroup>
-                        <InputLeftElement
-                        pointerEvents="none"
-                        color="gray.300"
-                        fontSize="1.2em"
-                        children="O"
                         />
-                        <Input placeholder="Enter amount" />
-                        <InputRightElement children={<CheckIcon color="green.500" />} />
-                    </InputGroup> */}
-                    <Button mt={4} colorScheme="teal" isLoading={formState.isSubmitting} type="submit">
-                      Submit
+                        <Input
+                            type="email"
+                            placeholder="Email"
+                            ref={register}
+                            name="username"
+                        />
+                    </InputGroup>
+                    <FormErrorMessage>
+                        {errors.username && errors.username.message}
+                    </FormErrorMessage>
+                </FormControl>
+                <FormControl id="password" isInvalid={errors.password} my={3}>
+                    <InputGroup>
+                        <InputLeftElement
+                            pointerEvents="none"
+                            children={<QuestionIcon color="gray.300" />}
+                        />
+                        <Input
+                            ref={register}
+                            name="password"
+                            type="password"
+                            placeholder="Password"
+                        />
+                    </InputGroup>
+                    <FormErrorMessage>
+                        {errors.password && errors.password.message}
+                    </FormErrorMessage>
+                </FormControl>
+                <Stack spacing={6} my={3}>
+                    <Stack
+                        direction={{ base: 'column', sm: 'row' }}
+                        align={'start'}
+                        justify={'space-between'}
+                    >
+                        <Checkbox colorScheme={'purple'}>Remember me</Checkbox>
+                        <OptimizedLink
+                            color={'purple.300'}
+                            label="Forgot password?"
+                            link="#"
+                        />
+                    </Stack>
+                    <Button
+                        fontFamily={'heading'}
+                        mt={8}
+                        w={'full'}
+                        bgGradient="linear(to-r, purple.300,purple.700)"
+                        color={'white'}
+                        _hover={{
+                            bgGradient: 'linear(to-r, purple.600,purple.800)',
+                            boxShadow: 'xl',
+                        }}
+                        type="submit"
+                        isLoading={formState.isLoading}
+                    >
+                        Sign in
                     </Button>
-                </form>
-             </Stack>
-         </Box>
+                </Stack>
+            </form>
+        </Stack>
     );
 };
-
 
 export default LoginForm;
