@@ -50,16 +50,16 @@ services:
       options:
         max-size: "100MB"
         max-file: "3"
-  # certbot:
-  #   image: certbot/certbot
-  #   container_name: certbot
-  #   volumes:
-  #     - ./data/certbot/etc:/etc/letsencrypt
-  #     - ./data/certbot/var:/var/lib/letsencrypt
-  #     - .:/project/onbranding/
-  #   depends_on:
-  #     - nginx
-  #   command: certonly --webroot --webroot-path=/project/onbranding/ --email hamza.hasbi@gmail.com --agree-tos --no-eff-email --staging -d onbranding.dev  -d www.onbranding.dev
+  certbot:
+    image: certbot/certbot
+    container_name: certbot
+    volumes:
+      - ./data/certbot/etc:/etc/letsencrypt
+      - ./data/certbot/var:/var/lib/letsencrypt
+      - .:/project/onbranding/
+    depends_on:
+      - nginx
+    command: certonly --webroot --webroot-path=/project/onbranding/ --email hamza.hasbi@gmail.com --agree-tos --no-eff-email --staging -d onbranding.dev  -d www.onbranding.dev
   
   mongodb:
     image: mongo:latest
