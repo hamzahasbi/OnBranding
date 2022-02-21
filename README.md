@@ -13,3 +13,4 @@ Limitations :
 - Advanced OOP concepts as for inheritance and abstractions!
 - Services are a little bit messed up cuz i can't force typed arguments!
 - Rules can be controlled much easier if i can force types of each variable!
+- Resuming front and then review api structure.
