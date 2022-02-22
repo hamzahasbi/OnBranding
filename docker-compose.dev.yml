@@ -37,12 +37,12 @@ services:
     volumes:
       - .:/project/onbranding/
       - ./branding.conf:/etc/nginx/conf.d/site.conf
-      # - ./data/certbot/etc:/etc/letsencrypt
-      # - ./data/certbot/var:/var/lib/letsencrypt
-      # - ./dhparam:/etc/ssl/certs
+      - ./data/certbot/etc:/etc/letsencrypt
+      - ./data/certbot/var:/var/lib/letsencrypt
+      - ./dhparam:/etc/ssl/certs
     ports:
-      - "80:80"
-      - "443:443"
+      - "85:80"
+      - "446:443"
     environment:
       - NGINX_PORT=80
     logging:
@@ -59,7 +59,7 @@ services:
       - .:/project/onbranding/
     depends_on:
       - nginx
-    command: certonly --webroot --webroot-path=/project/onbranding/ --email hamza.hasbi@gmail.com --agree-tos --no-eff-email --staging -d onbranding.dev  -d www.onbranding.dev
+    command: certonly --webroot --webroot-path=/project/onbranding/ --email hamza.hasbi@gmail.com --agree-tos --no-eff-email --staging -d onbranding.dd  -d www.onbranding.dd
   
   mongodb:
     image: mongo:latest
