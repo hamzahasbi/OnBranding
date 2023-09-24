@@ -1,20 +1,18 @@
-version: "3"
+version: "3.4"
 services:
   node:
-    image: node:latest
-    restart: on-failure
+    image: arm64v8/node:20-alpine
+    container_name: "express_server"
+    # restart: on
     ports:
-      - "4000:4000"
-    links:
-      - mongodb
-      - redis
-    depends_on:
-      - mongodb
-      - redis
+      - "4001:4000"
+    # depends_on:
+    #   - mongodb
+    #   - redis
     volumes:
-      - .:/project/onbranding
-    working_dir: /project/onbranding
-    command: yarn api-dev
+      - .:/project
+    working_dir: /project
+    command: ["sh", ".docker/scripts/back-entry.sh"]
     networks:
       - prod
     logging:
@@ -24,22 +22,21 @@ services:
         max-file: "3"
 
   nginx:
-    image: nginx:latest
+    image: nginx:1.23.3-alpine-slim
+    container_name: "nginx_backend"
     restart: always
-    links:
-     - node
-     - mongodb
-     - redis
     depends_on:
       - node
     networks:
       - prod
     volumes:
-      - .:/project/onbranding/
-      - ./branding.conf:/etc/nginx/conf.d/site.conf
-      - ./data/certbot/etc:/etc/letsencrypt
-      - ./data/certbot/var:/var/lib/letsencrypt
-      - ./dhparam:/etc/ssl/certs
+      - .:/project/
+      - .docker/nginx/branding.conf:/etc/nginx/conf.d/site.conf
+      # - ./data/certbot/etc:/etc/letsencrypt
+      # - ./data/certbot/var:/var/lib/letsencrypt
+      # - ./data/certbot/www:/var/www/certbot/:ro
+      # - ./data/certbot/conf/:/etc/nginx/ssl/:ro
+      # - ./dhparam:/etc/ssl/certs
     ports:
       - "85:80"
       - "446:443"
@@ -50,66 +47,93 @@ services:
       options:
         max-size: "100MB"
         max-file: "3"
-  certbot:
-    image: certbot/certbot
-    container_name: certbot
-    volumes:
-      - ./data/certbot/etc:/etc/letsencrypt
-      - ./data/certbot/var:/var/lib/letsencrypt
-      - .:/project/onbranding/
-    depends_on:
-      - nginx
-    command: certonly --webroot --webroot-path=/project/onbranding/ --email hamza.hasbi@gmail.com --agree-tos --no-eff-email --staging -d onbranding.dd  -d www.onbranding.dd
-  
-  mongodb:
-    image: mongo:latest
-    restart: always
-    env_file:
-      - ./.env
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
-      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
-    ports:
-      - "27017:27017"
-    volumes:
-      - mongodb:/data/db/
+    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+  # certbot:
+  #   image: certbot/certbot
+  #   container_name: certbot
+  #   volumes:
+  #     - ./data/certbot/etc:/etc/letsencrypt
+  #     - ./data/certbot/var:/var/lib/letsencrypt
+  #     - ./data/certbot/www/:/var/www/certbot/
+  #     - ./data/certbot/init-cert.sh:/tmp/init-cert.sh
+  #   entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+  # mongodb:
+  #   image: mongo:latest
+  #   restart: always
+  #   env_file:
+  #     - ./.env
+  #   environment:
+  #     MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+  #     MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+  #   ports:
+  #     - "27017:27017"
+  #   volumes:
+  #     - mongodb:/data/db/
+  #   networks:
+  #     - prod
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "100MB"
+  #       max-file: "3"
+  #   command: mongod --auth
+
+  # admin:
+  #   image: mongo-express
+  #   depends_on:
+  #     - mongodb
+  #   links:
+  #     - mongodb
+  #   restart: always
+  #   networks:
+  #     - prod
+  #   env_file:
+  #     - ./.env
+  #   ports:
+  #     - "8080:8081"
+  next:
+    image: arm64v8/node:20-alpine  # Use an appropriate Node.js version
+    working_dir: /app
+    container_name: "next_server"
     networks:
       - prod
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "100MB"
-        max-file: "3"
-    command: mongod --auth
+    volumes:
+      - .:/app  # Replace './nextjs-app' with the path to your Next.js app code
+    # environment:
+    #   - NODE_ENV=development
+    #   - NEXT_TELEMETRY_DISABLED=1  # Optional: Disable Next.js telemetry if desired
+    ports:
+      - "3000:3000"  # Adjust the port if necessary
+    command: ["sh", "./docker/scripts/front-entry.sh"]
+    depends_on:
+      - redis
 
   redis:
-    image: redis:latest
+    container_name: "frontend_cache"
+    image: arm64v8/redis:6.2-alpine
     restart: always
-    ports:
-      - "6379:6379"
     networks:
       - prod
+    ports:
+      - "6378:6379"
+    command: redis-server --save 20 1 --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
     volumes:
-      - redis:/data/
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "100MB"
-        max-file: "3"
+      - redis:/data
 
-  admin:
-    image: mongo-express
+  proxy:
+    restart: unless-stopped
+    build:
+      context: ./.docker
+      dockerfile: Dockerfile
+      target: runner_nginx
+    # ports:
+    #   - 8080:80
     depends_on:
-      - mongodb
-    links:
-      - mongodb
-    restart: always
+      - next
+    # volumes:
+    #   - ./nginx/default.conf:/etc/nginx/nginx.conf
     networks:
       - prod
-    env_file:
-      - ./.env
-    ports:
-      - "8080:8081"
 
 networks:
   prod:

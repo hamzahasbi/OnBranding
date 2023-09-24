@@ -13,7 +13,7 @@ const { validate, postRules } = require('../../services/validationManager');
 router.get('/', verify, async (req, res) => {
     try {
         const {
- limit, tags, offset, sort, post
+            limit, tags, offset, sort, post
 } = req.query;
         const user = mongoose.Types.ObjectId(req.user.id);
 

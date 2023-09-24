@@ -4,7 +4,7 @@ const router = express.Router();
 const jwt = require('jsonwebtoken');
 const config = require('config');
 const { User } = require('../../models/User');
-const { loginRules, validate } = require('../../services/validationManager.js');
+const { loginRules, validate } = require('../../services/validationManager');
 const { validatePassword } = require('../../services/PasswordManager');
 
 // @route POST api/login

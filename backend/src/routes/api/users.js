@@ -6,7 +6,7 @@ const config = require('config');
 const {
     registrationRules,
     validate,
-} = require('../../services/validationManager.js');
+} = require('../../services/validationManager');
 
 const UserManager = require('../../services/UserManager');
 
