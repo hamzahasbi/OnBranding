@@ -135,6 +135,17 @@ services:
     networks:
       - prod
 
+  bun:
+    image: oven/bun:latest
+    container_name: "bun_server"
+    restart: always
+    ports:
+      - "5000:5000"  # Adjust the port if necessary
+    command: [ "sh", "./bun-entry.sh" ]
+    volumes:
+      - ./bunend:/project
+    working_dir: /project
+
 networks:
   prod:
     driver: bridge

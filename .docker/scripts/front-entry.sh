@@ -5,6 +5,3 @@ yarn install
 
 # Start the Next.js app
 yarn run front-dev
-# yarn workspace sonasid icons:build
-# yarn workspace sonasid run build
-# yarn workspace sonasid run start
