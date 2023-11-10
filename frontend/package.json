@@ -15,7 +15,7 @@
     "@emotion/react": "^11.1.5",
     "@emotion/styled": "^11.1.5",
     "@hookform/resolvers": "2.0.0-beta.3",
-    "axios": "^0.21.1",
+    "axios": "^1.6.0",
     "dompurify": "^2.2.6",
     "framer-motion": "^3.6.7",
     "next": "10.0.7",
