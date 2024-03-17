@@ -7,6 +7,7 @@
   "private": true,
   "scripts": {
     "api-dev": "yarn workspace backend develop",
+    "docs": "yarn workspace backend build-docs",
     "api": "yarn workspace backend start",
     "front-dev": "yarn workspace frontend dev",
     "front": "yarn workspace frontend start",

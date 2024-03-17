@@ -6,7 +6,8 @@
   "scripts": {
     "test": "mocha \"__tests__/**/*.test.js\" --recursive --timeout 20000 --exit",
     "start": "node server.js",
-    "develop": "nodemon server.js"
+    "develop": "nodemon server.js",
+    "build-docs": "node swagger.js"
   },
   "engines": {
     "node": ">=8.10.0"
@@ -22,6 +23,7 @@
   },
   "homepage": "https://github.com/hamzahasbi/OnBranding#readme",
   "dependencies": {
+    "and": "^0.0.3",
     "axios": "^0.21.1",
     "bcryptjs": "^2.4.3",
     "config": "^3.3.3",
@@ -29,7 +31,9 @@
     "express-validator": "^6.9.2",
     "gravatar": "^1.8.1",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.11.11"
+    "mongoose": "^5.11.11",
+    "swagger-autogen": "^2.23.6",
+    "swagger-ui-express": "^5.0.0"
   },
   "devDependencies": {
     "chai": "^4.2.0",

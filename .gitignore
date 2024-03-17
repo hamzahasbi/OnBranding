@@ -110,3 +110,7 @@ mongodb/
 .DS_Store
 data/
 dhparam
+*.txt
+swagger_output.json
+.idea/
+.husky/
