@@ -24,7 +24,7 @@
   "homepage": "https://github.com/hamzahasbi/OnBranding#readme",
   "dependencies": {
     "and": "^0.0.3",
-    "axios": "^0.21.1",
+    "axios": "^0.28.0",
     "bcryptjs": "^2.4.3",
     "config": "^3.3.3",
     "express": "^4.17.1",
